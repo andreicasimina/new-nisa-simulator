@@ -1,5 +1,10 @@
 export type BucketType = 'tsumitate' | 'growth' | 'proportional';
 
+export interface BucketAmount {
+  tsumitate: number;
+  growth: number;
+}
+
 export interface MilestoneWithdrawal {
   id: string;
   yearIndex: number;
