@@ -21,7 +21,7 @@ const milestoneWithdrawalSchema = z.object({
   label: z.string().max(100),
 });
 
-export const nisaPlanStateSchema = z.object({
+const nisaPlanStateSchema = z.object({
   age: z.number().int().min(18).max(100),
   horizonYears: z.number().int().min(1).max(50),
   expectedReturnRate: z.number().min(0).max(0.20),
@@ -32,11 +32,11 @@ export const nisaPlanStateSchema = z.object({
   withdrawals: z.array(milestoneWithdrawalSchema),
 });
 
-export function encodePlanToUrl(state: NisaPlanState): string {
-  return LZString.compressToEncodedURIComponent(JSON.stringify(state));
+function encodeState(plan: NisaPlanState): string {
+  return LZString.compressToEncodedURIComponent(JSON.stringify(plan));
 }
 
-export function decodePlanFromUrl(encoded: string): NisaPlanState | null {
+function decodeState(encoded: string): NisaPlanState | null {
   try {
     const json = LZString.decompressFromEncodedURIComponent(encoded);
     if (!json) return null;
@@ -47,4 +47,20 @@ export function decodePlanFromUrl(encoded: string): NisaPlanState | null {
   } catch {
     return null;
   }
+}
+
+export function createShareUrl(plan: NisaPlanState, baseUrl: string = ''): string {
+  const encoded = encodeState(plan);
+  return `${baseUrl}#data=${encoded}`;
+}
+
+export function readPlanFromUrl(hash: string): NisaPlanState | null {
+  if (!hash) return null;
+
+  const cleanHash = hash.startsWith('#') ? hash.slice(1) : hash;
+  const params = new URLSearchParams(cleanHash);
+  const data = params.get('data');
+  if (!data) return null;
+
+  return decodeState(data);
 }

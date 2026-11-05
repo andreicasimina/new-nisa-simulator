@@ -1,16 +1,16 @@
 import { describe, it, expect } from 'vitest';
 import LZString from 'lz-string';
-import { encodePlanToUrl, decodePlanFromUrl } from '../urlEncoder';
+import { createShareUrl, readPlanFromUrl } from '../urlUtils';
 import { DEFAULT_PLAN_STATE } from '../../engine/constants';
 import { NisaPlanState } from '../../types/state';
 
-describe('urlEncoder', () => {
+describe('urlUtils', () => {
   it('performs full round-trip encoding and decoding with DEFAULT_PLAN_STATE', () => {
-    const encoded = encodePlanToUrl(DEFAULT_PLAN_STATE);
-    expect(typeof encoded).toBe('string');
-    expect(encoded.length).toBeGreaterThan(0);
+    const url = createShareUrl(DEFAULT_PLAN_STATE, 'https://example.com');
+    expect(url).toContain('https://example.com#data=');
 
-    const decoded = decodePlanFromUrl(encoded);
+    const hash = url.split('#')[1];
+    const decoded = readPlanFromUrl(hash);
     expect(decoded).toEqual(DEFAULT_PLAN_STATE);
   });
 
@@ -44,15 +44,24 @@ describe('urlEncoder', () => {
       ],
     };
 
-    const encoded = encodePlanToUrl(customPlan);
-    const decoded = decodePlanFromUrl(encoded);
-
+    const url = createShareUrl(customPlan);
+    const decoded = readPlanFromUrl(url.split('#')[1]);
     expect(decoded).toEqual(customPlan);
   });
 
-  it('returns null when decoding corrupt or invalid strings', () => {
-    expect(decodePlanFromUrl('garbage_string_not_lz')).toBeNull();
-    expect(decodePlanFromUrl('')).toBeNull();
+  it('accepts hash with or without leading #', () => {
+    const url = createShareUrl(DEFAULT_PLAN_STATE);
+    const withHash = url.split('https://example.com')[1] || url; // starts with #data=...
+    const withoutHash = withHash.replace(/^#/, '');
+
+    expect(readPlanFromUrl(withHash)).toEqual(DEFAULT_PLAN_STATE);
+    expect(readPlanFromUrl(withoutHash)).toEqual(DEFAULT_PLAN_STATE);
+  });
+
+  it('returns null on empty, missing data, or corrupted string', () => {
+    expect(readPlanFromUrl('')).toBeNull();
+    expect(readPlanFromUrl('foo=bar')).toBeNull();
+    expect(readPlanFromUrl('data=corrupted_garbage_string')).toBeNull();
   });
 
   it('rejects data that violates statutory bounds via Zod validation', () => {
@@ -61,20 +70,20 @@ describe('urlEncoder', () => {
     const encodedInvalidAge = LZString.compressToEncodedURIComponent(
       JSON.stringify(invalidAge)
     );
-    expect(decodePlanFromUrl(encodedInvalidAge)).toBeNull();
+    expect(readPlanFromUrl(`data=${encodedInvalidAge}`)).toBeNull();
 
     // Return rate > 20%
     const invalidReturnRate = { ...DEFAULT_PLAN_STATE, expectedReturnRate: 0.50 };
     const encodedInvalidRate = LZString.compressToEncodedURIComponent(
       JSON.stringify(invalidReturnRate)
     );
-    expect(decodePlanFromUrl(encodedInvalidRate)).toBeNull();
+    expect(readPlanFromUrl(`data=${encodedInvalidRate}`)).toBeNull();
 
     // Negative contribution
     const negativeContribution = { ...DEFAULT_PLAN_STATE, tsumitateMonthly: -500 };
     const encodedNegative = LZString.compressToEncodedURIComponent(
       JSON.stringify(negativeContribution)
     );
-    expect(decodePlanFromUrl(encodedNegative)).toBeNull();
+    expect(readPlanFromUrl(`data=${encodedNegative}`)).toBeNull();
   });
 });
