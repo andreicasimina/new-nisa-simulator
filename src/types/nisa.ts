@@ -1,4 +1,5 @@
-export type BucketType = 'tsumitate' | 'growth' | 'proportional';
+export const BUCKET_TYPES = ['tsumitate', 'growth', 'proportional'] as const;
+export type BucketType = typeof BUCKET_TYPES[number];
 
 export interface BucketAmount {
   tsumitate: number;
