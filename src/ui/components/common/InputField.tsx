@@ -31,7 +31,7 @@ export const InputField: React.FC<InputFieldProps> = ({
     <div className={cn('flex flex-col gap-1 w-full', className)}>
       <div
         className={cn(
-          'bg-gray-100 flex items-center justify-between rounded-lg px-2 py-1 border transition-colors',
+          'bg-bg-input flex items-center justify-between rounded-lg px-2 py-1 border transition-colors',
           error ? 'border-red-500 bg-red-50/50' : 'border-transparent'
         )}
       >
@@ -42,9 +42,9 @@ export const InputField: React.FC<InputFieldProps> = ({
           step={step}
           min={0}
           onChange={handleChange}
-          className="w-full bg-transparent text-base font-medium text-gray-900 leading-[22px] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-full bg-transparent text-body-16 text-text-primary focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-        <span className="text-base font-medium text-gray-900 leading-[22px] shrink-0 pl-1 select-none">
+        <span className="text-body-16 text-text-primary shrink-0 pl-1 select-none">
           {unit}
         </span>
       </div>

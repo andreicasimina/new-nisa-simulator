@@ -34,7 +34,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   return (
     <div
       className={cn(
-        'bg-white border border-gray-200 rounded-lg p-2.5 w-full transition-all duration-300 ease-in-out',
+        'bg-bg-surface border border-border-subtle rounded-lg p-2.5 w-full transition-all duration-300 ease-in-out',
         isCollapsed ? 'sticky top-3 z-30 shadow-md' : 'shadow-xs',
         className
       )}

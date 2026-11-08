@@ -26,7 +26,7 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
       className={cn('w-full flex flex-col items-center gap-1 cursor-pointer relative', className)}
     >
       <div className="w-full flex items-center justify-center relative">
-        <p className="text-xs font-medium leading-[17px] text-gray-600">
+        <p className="text-caption-12 text-text-secondary">
           {label}
         </p>
         <button
@@ -35,17 +35,17 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
             e.stopPropagation();
             onOpenDetails();
           }}
-          className="absolute right-0 top-0 p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute right-0 top-0 p-0.5 text-text-muted hover:text-text-secondary transition-colors"
           aria-label="詳細を見る"
         >
           <ArrowUpRight className="w-4 h-4" />
         </button>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-1.5">
-        <span className="text-xl font-semibold leading-[26px] tracking-tight text-gray-900">
+        <span className="text-heading-20 text-text-primary">
           {formatYen(totalMarketValue)}
         </span>
-        <span className="text-sm font-medium leading-[22px] text-gray-600">
+        <span className="text-body-14 text-text-secondary">
           (積立 {formatYen(tsumitateMarketValue)} | 成長 {formatYen(growthMarketValue)})
         </span>
       </div>
