@@ -1,6 +1,6 @@
 import React from 'react';
 import { BottomSheet } from './BottomSheet';
-import { MonthlyRecord, MilestoneWithdrawal } from '@/core/types/nisa';
+import { YearlyRecord, MilestoneWithdrawal } from '@/core/types/nisa';
 import { formatYen } from '@/ui/utils/formatters';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { STATUTORY_LIMITS } from '@/core/engine/constants';
@@ -10,7 +10,7 @@ interface ResultDetailsSheetProps {
   onClose: () => void;
   yearIndex: number;
   onYearChange: (year: number) => void;
-  yearlyRecords: MonthlyRecord[];
+  yearlyRecords: YearlyRecord[];
   withdrawals: MilestoneWithdrawal[];
   horizonYears: number;
 }
@@ -189,10 +189,15 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
                 年間投資枠（使用額）
               </span>
               <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(currentRecord.tsumitateContribution + currentRecord.growthContribution)} / {formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}
+                {formatYen(
+                  currentRecord.annualContributions.tsumitate +
+                    currentRecord.annualContributions.growth
+                )}{' '}
+                / {formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}
               </span>
               <span className="text-caption-12 text-text-muted">
-                (積立: {formatYen(currentRecord.tsumitateContribution)} / {formatYen(STATUTORY_LIMITS.ANNUAL_TSUMITATE)})
+                (積立: {formatYen(currentRecord.annualContributions.tsumitate)} /{' '}
+                {formatYen(STATUTORY_LIMITS.ANNUAL_TSUMITATE)})
               </span>
             </div>
           </div>
