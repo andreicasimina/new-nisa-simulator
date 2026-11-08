@@ -1,5 +1,4 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 
 interface AddWithdrawalButtonProps {
@@ -16,12 +15,11 @@ export const AddWithdrawalButton: React.FC<AddWithdrawalButtonProps> = ({
       type="button"
       onClick={onClick}
       className={cn(
-        'w-full py-2.5 px-4 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-14-semibold rounded-2xl flex items-center justify-center gap-1.5 transition-colors cursor-pointer active:scale-[0.99]',
+        'w-full py-2.5 px-4 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-14-semibold rounded-2xl transition-colors cursor-pointer text-center active:scale-[0.99]',
         className
       )}
     >
-      <Plus className="w-4 h-4 text-text-primary" />
-      <span>売却イベントを追加する</span>
+      売却イベントを追加する
     </button>
   );
 };
