@@ -22,8 +22,10 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
 }) => {
   if (withdrawals.length === 0) {
     return (
-      <div className={cn('text-caption-12 text-text-muted py-2 text-center', className)}>
-        登録された売却イベントはありません
+      <div className={cn('flex items-center justify-center w-full', className)}>
+        <p className="text-caption-12 text-text-muted whitespace-nowrap">
+          登録された売却イベントは存在しません
+        </p>
       </div>
     );
   }
