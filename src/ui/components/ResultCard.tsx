@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '@/ui/lib/utils';
 import { SimulationResult } from '@/core/types/nisa';
 import { ResultCardCollapsed } from '@/ui/components/result/ResultCardCollapsed';
 import { ResultCardExpanded } from '@/ui/components/result/ResultCardExpanded';
@@ -20,7 +21,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   hasWithdrawals,
   isCollapsed = false,
   onOpenDetails,
-  className = '',
+  className,
 }) => {
   const label = hasWithdrawals
     ? `${horizonYears}年目・売却後の資産額`
@@ -32,11 +33,11 @@ export const ResultCard: React.FC<ResultCardProps> = ({
 
   return (
     <div
-      className={`bg-white border border-[#e5e7eb] rounded-[8px] p-[10px] w-full transition-all duration-300 ease-in-out ${
-        isCollapsed
-          ? 'sticky top-3 z-30 shadow-[0px_4px_6px_rgba(0,0,0,0.12)]'
-          : 'shadow-xs'
-      } ${className}`}
+      className={cn(
+        'bg-white border border-gray-200 rounded-lg p-2.5 w-full transition-all duration-300 ease-in-out',
+        isCollapsed ? 'sticky top-3 z-30 shadow-md' : 'shadow-xs',
+        className
+      )}
     >
       {isCollapsed ? (
         <ResultCardCollapsed

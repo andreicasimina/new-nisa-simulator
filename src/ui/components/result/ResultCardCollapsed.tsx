@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { cn } from '@/ui/lib/utils';
 import { formatYen } from '@/ui/utils/formatters';
 
 interface ResultCardCollapsedProps {
@@ -8,6 +9,7 @@ interface ResultCardCollapsedProps {
   tsumitateMarketValue: number;
   growthMarketValue: number;
   onOpenDetails: () => void;
+  className?: string;
 }
 
 export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
@@ -16,14 +18,15 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
   tsumitateMarketValue,
   growthMarketValue,
   onOpenDetails,
+  className,
 }) => {
   return (
     <div
       onClick={onOpenDetails}
-      className="w-full flex flex-col items-center gap-1 cursor-pointer relative"
+      className={cn('w-full flex flex-col items-center gap-1 cursor-pointer relative', className)}
     >
       <div className="w-full flex items-center justify-center relative">
-        <p className="text-[12px] font-medium leading-[17px] text-[#4b5563]">
+        <p className="text-xs font-medium leading-[17px] text-gray-600">
           {label}
         </p>
         <button
@@ -39,10 +42,10 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
         </button>
       </div>
       <div className="flex flex-wrap items-center justify-center gap-1.5">
-        <span className="text-[20px] font-semibold leading-[26px] tracking-[-0.2px] text-[#111827]">
+        <span className="text-xl font-semibold leading-[26px] tracking-tight text-gray-900">
           {formatYen(totalMarketValue)}
         </span>
-        <span className="text-[14px] font-medium leading-[22px] text-[#4b5563]">
+        <span className="text-sm font-medium leading-[22px] text-gray-600">
           (積立 {formatYen(tsumitateMarketValue)} | 成長 {formatYen(growthMarketValue)})
         </span>
       </div>

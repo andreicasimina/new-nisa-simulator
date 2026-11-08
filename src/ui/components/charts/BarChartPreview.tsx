@@ -1,16 +1,19 @@
 import React from 'react';
+import { cn } from '@/ui/lib/utils';
 import { YearlyRecord } from '@/core/types/nisa';
 
 interface BarChartPreviewProps {
   yearly: YearlyRecord[];
   selectedYear?: number;
   onSelectYear: (yearIndex: number) => void;
+  className?: string;
 }
 
 export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
   yearly,
   selectedYear,
   onSelectYear,
+  className,
 }) => {
   if (yearly.length === 0) return null;
 
@@ -25,7 +28,10 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
   return (
     <div
       onClick={() => onSelectYear(selectedYear ?? yearly.length)}
-      className="w-full h-[150px] bg-slate-50 hover:bg-slate-100/70 transition-colors border border-gray-100 rounded-[8px] p-2 flex flex-col justify-end cursor-pointer group relative overflow-hidden"
+      className={cn(
+        'w-full h-[150px] bg-slate-50 hover:bg-slate-100/70 transition-colors border border-gray-100 rounded-lg p-2 flex flex-col justify-end cursor-pointer group relative overflow-hidden',
+        className
+      )}
       role="button"
       tabIndex={0}
       aria-label="資産推移グラフ（タップで詳細を表示）"
@@ -82,9 +88,10 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
               {/* Stacked bar */}
               <div
                 style={{ height: `${Math.max(4, totalHeightPercent)}%` }}
-                className={`w-full flex flex-col justify-end rounded-t-xs overflow-hidden transition-all ${
+                className={cn(
+                  'w-full flex flex-col justify-end rounded-t-xs overflow-hidden transition-all',
                   isSelected ? 'ring-2 ring-emerald-500' : 'opacity-90 group-hover/bar:opacity-100'
-                }`}
+                )}
               >
                 {/* Gain segment */}
                 <div

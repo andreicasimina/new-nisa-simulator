@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
+import { cn } from '@/ui/lib/utils';
 import { Backdrop } from '@/ui/components/common/Backdrop';
 
 interface BottomSheetProps {
   isOpen: boolean;
   onClose: () => void;
   title?: string;
+  className?: string;
   children: React.ReactNode;
 }
 
@@ -13,6 +15,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   isOpen,
   onClose,
   title,
+  className,
   children,
 }) => {
   useEffect(() => {
@@ -34,11 +37,14 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
       <div
         role="dialog"
         aria-modal="true"
-        className="relative z-10 w-full max-w-[393px] bg-white rounded-t-[16px] sm:rounded-b-[16px] shadow-[0px_-4px_20px_0px_rgba(0,0,0,0.08)] flex flex-col max-h-[90vh] overflow-hidden animate-slide-up"
+        className={cn(
+          'relative z-10 w-full max-w-[393px] bg-white rounded-t-2xl sm:rounded-b-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up',
+          className
+        )}
       >
         {/* Grab Handle */}
         <div className="flex justify-center pt-2 pb-1 shrink-0">
-          <div className="w-[36px] h-[4px] bg-[#d1d5db] rounded-full" />
+          <div className="w-9 h-1 bg-gray-300 rounded-full" />
         </div>
 
         <div className="relative px-4 py-2 flex items-center justify-center shrink-0 min-h-[40px]">

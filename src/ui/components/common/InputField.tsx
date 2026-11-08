@@ -1,4 +1,5 @@
 import React from 'react';
+import { cn } from '@/ui/lib/utils';
 import { InputUnit, UNIT_CONFIG } from '@/ui/types/units';
 import { unitToDisplay, parseUnitInput } from '@/ui/utils/unitConversion';
 
@@ -15,7 +16,7 @@ export const InputField: React.FC<InputFieldProps> = ({
   onChange,
   unit,
   error,
-  className = '',
+  className,
 }) => {
   const displayVal = unitToDisplay(value, unit);
   const step = UNIT_CONFIG[unit].step;
@@ -27,11 +28,12 @@ export const InputField: React.FC<InputFieldProps> = ({
   };
 
   return (
-    <div className={`flex flex-col gap-1 w-full ${className}`}>
+    <div className={cn('flex flex-col gap-1 w-full', className)}>
       <div
-        className={`bg-[#f3f4f6] flex items-center justify-between rounded-[8px] px-[7px] py-[3px] border transition-colors ${
+        className={cn(
+          'bg-gray-100 flex items-center justify-between rounded-lg px-2 py-1 border transition-colors',
           error ? 'border-red-500 bg-red-50/50' : 'border-transparent'
-        }`}
+        )}
       >
         <input
           type="number"
@@ -40,14 +42,14 @@ export const InputField: React.FC<InputFieldProps> = ({
           step={step}
           min={0}
           onChange={handleChange}
-          className="w-full bg-transparent text-[16px] font-medium text-[#111827] leading-[22px] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          className="w-full bg-transparent text-base font-medium text-gray-900 leading-[22px] focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
         />
-        <span className="text-[16px] font-medium text-[#111827] leading-[22px] shrink-0 pl-1 select-none">
+        <span className="text-base font-medium text-gray-900 leading-[22px] shrink-0 pl-1 select-none">
           {unit}
         </span>
       </div>
       {error && (
-        <span className="text-[11px] text-red-500 leading-tight">{error}</span>
+        <span className="text-xs text-red-500 leading-tight">{error}</span>
       )}
     </div>
   );
