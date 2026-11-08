@@ -23,29 +23,32 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
   return (
     <div
       onClick={onOpenDetails}
-      className={cn('w-full flex flex-col items-center gap-1 cursor-pointer relative', className)}
+      className={cn(
+        'w-full flex flex-col gap-[9px] items-center cursor-pointer relative',
+        className
+      )}
     >
-      <div className="w-full flex items-center justify-center relative">
-        <p className="text-caption-12 text-text-secondary">
-          {label}
-        </p>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenDetails();
-          }}
-          className="absolute right-0 top-0 p-0.5 text-text-muted hover:text-text-secondary transition-colors"
-          aria-label="詳細を見る"
-        >
-          <ArrowUpRight className="w-4 h-4" />
-        </button>
-      </div>
-      <div className="flex flex-wrap items-center justify-center gap-1.5">
-        <span className="text-heading-20 text-text-primary">
+      <p className="text-caption-12 text-text-secondary whitespace-nowrap">
+        {label}
+      </p>
+
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          onOpenDetails();
+        }}
+        className="absolute top-0 right-0 p-0 text-text-muted hover:text-text-secondary transition-colors"
+        aria-label="詳細を見る"
+      >
+        <ArrowUpRight className="w-4 h-4" />
+      </button>
+
+      <div className="w-full flex flex-wrap gap-1 items-start justify-center">
+        <span className="text-heading-20 text-text-primary whitespace-nowrap">
           {formatYen(totalMarketValue)}
         </span>
-        <span className="text-body-14 text-text-secondary">
+        <span className="text-body-16 text-text-secondary whitespace-nowrap">
           (積立 {formatYen(tsumitateMarketValue)} | 成長 {formatYen(growthMarketValue)})
         </span>
       </div>

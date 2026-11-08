@@ -25,7 +25,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
 }) => {
   const label = hasWithdrawals
     ? `${horizonYears}年目・売却後の資産額`
-    : `${horizonYears}年目の資産額`;
+    : `${horizonYears}年目・資産額`;
 
   const lastYearRecord = yearly[yearly.length - 1];
   const tsumitateMarketValue = lastYearRecord?.holdings.tsumitate.marketValue ?? 0;
@@ -35,7 +35,7 @@ export const ResultCard: React.FC<ResultCardProps> = ({
     <div
       className={cn(
         'bg-bg-surface border border-border-subtle rounded-lg p-2.5 w-full transition-all duration-300 ease-in-out',
-        isCollapsed ? 'sticky top-3 z-30 shadow-md' : 'shadow-xs',
+        isCollapsed ? 'sticky top-3 z-30 drop-shadow-[0px_4px_6px_rgba(0,0,0,0.5)]' : '',
         className
       )}
     >

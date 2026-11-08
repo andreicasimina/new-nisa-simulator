@@ -25,7 +25,7 @@ export const ResultCardExpanded: React.FC<ResultCardExpandedProps> = ({
 }) => {
   return (
     <div className={cn('w-full flex flex-col items-center gap-2.5', className)}>
-      <div className="flex flex-col gap-2 items-center text-center">
+      <div className="flex flex-col gap-[9px] items-center text-center">
         <p className="text-caption-12 text-text-secondary">
           {label}
         </p>
