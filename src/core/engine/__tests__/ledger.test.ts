@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { simulateNisaPlan, calculateAllowedDeposit, executeWithdrawal } from '../ledger';
-import { DEFAULT_PLAN_STATE } from '../constants';
-import { Holdings, MilestoneWithdrawal } from '../../types/nisa';
-import { NisaPlanState } from '../../types/state';
+import { simulateNisaPlan, calculateAllowedDeposit, executeWithdrawal } from '@/core/engine/ledger';
+import { DEFAULT_PLAN_STATE } from '@/core/engine/constants';
+import { Holdings, MilestoneWithdrawal } from '@/core/types/nisa';
+import { NisaPlanState } from '@/core/types/state';
 
 describe('calculateAllowedDeposit', () => {
   it('allows full deposit when well within annual and lifetime caps', () => {

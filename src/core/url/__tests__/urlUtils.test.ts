@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import LZString from 'lz-string';
-import { createShareUrl, readPlanFromUrl } from '../urlUtils';
-import { DEFAULT_PLAN_STATE } from '../../engine/constants';
-import { NisaPlanState } from '../../types/state';
+import { createShareUrl, readPlanFromUrl } from '@/core/url/urlUtils';
+import { DEFAULT_PLAN_STATE } from '@/core/engine/constants';
+import { NisaPlanState } from '@/core/types/state';
 
 describe('urlUtils', () => {
   it('performs full round-trip encoding and decoding with DEFAULT_PLAN_STATE', () => {

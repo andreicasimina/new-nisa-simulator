@@ -1,7 +1,7 @@
 import LZString from 'lz-string';
 import { z } from 'zod';
-import { NisaPlanState } from '../types/state';
-import { BUCKET_TYPES } from '../types/nisa';
+import { NisaPlanState } from '@/core/types/state';
+import { BUCKET_TYPES } from '@/core/types/nisa';
 
 const bucketBalanceSchema = z.object({
   principal: z.number().min(0),

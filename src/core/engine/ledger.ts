@@ -1,5 +1,5 @@
-import { STATUTORY_LIMITS } from './constants';
-import { NisaPlanState } from '../types/state';
+import { STATUTORY_LIMITS } from '@/core/engine/constants';
+import { NisaPlanState } from '@/core/types/state';
 import {
   BucketAmount,
   Holdings,
@@ -8,7 +8,7 @@ import {
   MonthlyRecord,
   SimulationResult,
   YearlyRecord,
-} from '../types/nisa';
+} from '@/core/types/nisa';
 
 const MONTHS_PER_YEAR = 12;
 

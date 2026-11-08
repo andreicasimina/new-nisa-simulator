@@ -1,7 +1,7 @@
 import React from 'react';
-import { SimulationResult } from '../../core/types/nisa';
-import { ResultCardCollapsed } from './result/ResultCardCollapsed';
-import { ResultCardExpanded } from './result/ResultCardExpanded';
+import { SimulationResult } from '@/core/types/nisa';
+import { ResultCardCollapsed } from '@/ui/components/result/ResultCardCollapsed';
+import { ResultCardExpanded } from '@/ui/components/result/ResultCardExpanded';
 
 interface ResultCardProps {
   summary: SimulationResult['summary'];

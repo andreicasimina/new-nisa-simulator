@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { usePlanStore } from '../usePlanStore';
-import { DEFAULT_PLAN_STATE } from '../../engine/constants';
+import { usePlanStore } from '@/core/store/usePlanStore';
+import { DEFAULT_PLAN_STATE } from '@/core/engine/constants';
 
 describe('usePlanStore', () => {
   beforeEach(() => {

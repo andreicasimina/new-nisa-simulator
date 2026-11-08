@@ -1,6 +1,6 @@
 import React from 'react';
-import { InputUnit, UNIT_CONFIG } from '../../types/units';
-import { unitToDisplay, parseUnitInput } from '../../utils/unitConversion';
+import { InputUnit, UNIT_CONFIG } from '@/ui/types/units';
+import { unitToDisplay, parseUnitInput } from '@/ui/utils/unitConversion';
 
 interface InputFieldProps {
   value: number;

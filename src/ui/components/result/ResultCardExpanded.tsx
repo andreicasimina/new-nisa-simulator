@@ -1,7 +1,7 @@
 import React from 'react';
-import { YearlyRecord } from '../../../core/types/nisa';
-import { formatYen } from '../../utils/formatters';
-import { BarChartPreview } from '../charts/BarChartPreview';
+import { YearlyRecord } from '@/core/types/nisa';
+import { formatYen } from '@/ui/utils/formatters';
+import { BarChartPreview } from '@/ui/components/charts/BarChartPreview';
 
 interface ResultCardExpandedProps {
   label: string;

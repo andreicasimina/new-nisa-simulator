@@ -1,4 +1,4 @@
-import { InputUnit } from '../types/units';
+import { InputUnit } from '@/ui/types/units';
 
 /**
  * Converts a raw domain value (Yen, fractional rate like 0.05, or years)

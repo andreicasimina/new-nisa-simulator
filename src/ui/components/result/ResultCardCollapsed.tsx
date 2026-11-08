@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { formatYen } from '../../utils/formatters';
+import { formatYen } from '@/ui/utils/formatters';
 
 interface ResultCardCollapsedProps {
   label: string;

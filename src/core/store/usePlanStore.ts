@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import { NisaPlanState } from '../types/state';
-import { MilestoneWithdrawal, SimulationResult } from '../types/nisa';
-import { DEFAULT_PLAN_STATE } from '../engine/constants';
-import { simulateNisaPlan } from '../engine/ledger';
-import { readPlanFromUrl } from '../url/urlUtils';
+import { NisaPlanState } from '@/core/types/state';
+import { MilestoneWithdrawal, SimulationResult } from '@/core/types/nisa';
+import { DEFAULT_PLAN_STATE } from '@/core/engine/constants';
+import { simulateNisaPlan } from '@/core/engine/ledger';
+import { readPlanFromUrl } from '@/core/url/urlUtils';
 
 interface PlanStore {
   plan: NisaPlanState;

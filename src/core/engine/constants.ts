@@ -1,4 +1,4 @@
-import { NisaPlanState } from '../types/state';
+import { NisaPlanState } from '@/core/types/state';
 
 export const STATUTORY_LIMITS = {
   ANNUAL_AGGREGATE: 3_600_000,
