@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Share2, Check } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
-import { writePlanToUrl } from '@/core/url/urlUtils';
+import { createShareUrl } from '@/core/url/urlUtils';
 import { NisaPlanState } from '@/core/types/state';
 
 interface ShareButtonProps {
@@ -13,8 +13,10 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => 
   const [copied, setCopied] = useState(false);
 
   const handleShare = async () => {
-    const urlHash = writePlanToUrl(plan);
-    const fullUrl = `${window.location.origin}${window.location.pathname}${urlHash}`;
+    const fullUrl = createShareUrl(
+      plan,
+      `${window.location.origin}${window.location.pathname}`
+    );
 
     // Try Web Share API on mobile
     if (navigator.share) {
