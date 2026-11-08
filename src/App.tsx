@@ -47,8 +47,8 @@ export const App: React.FC = () => {
       const expandedHeight = 272;
       const collapsedHeight = 100;
 
-      // 1. Collapse downward when scrolling past 50% of the result card
-      const collapseThreshold = containerTop + expandedHeight * 0.5;
+      // 1. Collapse downward when scrolling past 25% of the result card
+      const collapseThreshold = containerTop + expandedHeight * 0.25;
       setIsCollapsed(window.scrollY >= collapseThreshold);
 
       // 2. Turn sticky when the collapsed card (at bottom of container) reaches top-3 (12px)
