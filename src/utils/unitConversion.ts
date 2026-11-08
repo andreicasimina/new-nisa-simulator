@@ -7,7 +7,7 @@ import { InputUnit } from '../types/units';
 export function unitToDisplay(value: number, unit: InputUnit): number | '' {
   if (value === 0) return '';
   switch (unit) {
-    case InputUnit.MAN_YEN:
+    case InputUnit.YEN:
       return value / 10_000;
     case InputUnit.PERCENT:
       return +(value * 100).toFixed(2);
@@ -26,7 +26,7 @@ export function parseUnitInput(inputValue: string, unit: InputUnit): number {
   if (isNaN(parsed) || parsed < 0) return 0;
 
   switch (unit) {
-    case InputUnit.MAN_YEN:
+    case InputUnit.YEN:
       return Math.round(parsed * 10_000);
     case InputUnit.PERCENT:
       return parsed / 100;
