@@ -1,0 +1,92 @@
+import React from 'react';
+import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
+import { formatYen } from '@/ui/utils/formatters';
+import { cn } from '@/ui/lib/utils';
+
+interface WithdrawalListProps {
+  withdrawals: MilestoneWithdrawal[];
+  onEdit: (withdrawal: MilestoneWithdrawal) => void;
+  className?: string;
+}
+
+const BUCKET_LABEL_MAP: Record<BucketType, string> = {
+  tsumitate: 'つみたて投資枠',
+  growth: '成長投資枠',
+  proportional: '按分（両方）',
+};
+
+export const WithdrawalList: React.FC<WithdrawalListProps> = ({
+  withdrawals,
+  onEdit,
+  className,
+}) => {
+  if (withdrawals.length === 0) {
+    return (
+      <div className={cn('text-caption-12 text-text-muted py-2 text-center', className)}>
+        登録された売却イベントはありません
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn('flex flex-col gap-3 w-full', className)}>
+      {withdrawals.map((withdrawal) => (
+        <div
+          key={withdrawal.id}
+          className="bg-bg-surface border border-border-subtle flex gap-3 items-start justify-between p-2.5 rounded-lg w-full"
+        >
+          <div className="flex flex-col gap-2 flex-1 min-w-0">
+            {/* Top row: Label & Year */}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                <span className="text-caption-12 text-text-secondary">
+                  ラベル
+                </span>
+                <span className="text-body-16 text-text-primary truncate">
+                  {withdrawal.label || '売却'}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 flex-1 min-w-0 text-right">
+                <span className="text-caption-12 text-text-secondary">
+                  売却年
+                </span>
+                <span className="text-body-16 text-text-primary">
+                  {withdrawal.yearIndex} 年目
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom row: Bucket & Amount */}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+                <span className="text-caption-12 text-text-secondary">
+                  売却元
+                </span>
+                <span className="text-body-16 text-text-primary">
+                  {BUCKET_LABEL_MAP[withdrawal.targetBucket]}
+                </span>
+              </div>
+              <div className="flex flex-col gap-0.5 flex-1 min-w-0 text-right">
+                <span className="text-caption-12 text-text-secondary">
+                  売却額
+                </span>
+                <span className="text-body-16 text-text-primary font-medium">
+                  {formatYen(withdrawal.amount)}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Edit Action Button */}
+          <button
+            type="button"
+            onClick={() => onEdit(withdrawal)}
+            className="text-caption-12 text-text-muted hover:text-text-primary transition-colors cursor-pointer pt-0.5 shrink-0"
+          >
+            編集
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+};
