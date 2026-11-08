@@ -1,5 +1,5 @@
 import React from 'react';
-import { YearlyRecord } from '../../types/nisa';
+import { YearlyRecord } from '../../../core/types/nisa';
 import { formatYen } from '../../utils/formatters';
 import { BarChartPreview } from '../charts/BarChartPreview';
 

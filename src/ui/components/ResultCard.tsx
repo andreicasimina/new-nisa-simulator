@@ -1,5 +1,5 @@
 import React from 'react';
-import { SimulationResult } from '../types/nisa';
+import { SimulationResult } from '../../core/types/nisa';
 import { ResultCardCollapsed } from './result/ResultCardCollapsed';
 import { ResultCardExpanded } from './result/ResultCardExpanded';
 
