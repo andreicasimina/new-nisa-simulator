@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePlanStore } from '@/core/store/usePlanStore';
 import { Header } from '@/ui/components/Header';
 import { ResultCard } from '@/ui/components/result/ResultCard';
@@ -22,7 +22,9 @@ export const App: React.FC = () => {
     removeWithdrawal,
   } = usePlanStore();
 
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
+  const headerRef = useRef<HTMLDivElement>(null);
 
   // Sheet states
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
@@ -32,15 +34,36 @@ export const App: React.FC = () => {
   const [isYearsInfoOpen, setIsYearsInfoOpen] = useState(false);
   const [isPurchaseInfoOpen, setIsPurchaseInfoOpen] = useState(false);
 
-  // Monitor scroll position to trigger collapsed sticky header
+  // Monitor scroll position: collapse first, then turn sticky when scrolling further down
   useEffect(() => {
     const handleScroll = () => {
-      // Collapse when scrolled past ~100px
-      setIsScrolled(window.scrollY > 100);
+      if (!headerRef.current) return;
+      const headerRect = headerRef.current.getBoundingClientRect();
+      const headerTop = headerRect.top + window.scrollY;
+      const headerHeight = headerRef.current.offsetHeight;
+
+      // Distance from top of document to top of ResultCard container (header + gap-4)
+      const containerTop = headerTop + headerHeight + 16;
+      const expandedHeight = 272;
+      const collapsedHeight = 88;
+
+      // 1. Collapse downward when scrolling past 50% of the result card
+      const collapseThreshold = containerTop + expandedHeight * 0.5;
+      setIsCollapsed(window.scrollY >= collapseThreshold);
+
+      // 2. Turn sticky when the collapsed card (at bottom of container) reaches top-3 (12px)
+      const collapsedCardTop = containerTop + expandedHeight - collapsedHeight;
+      const stickyThreshold = collapsedCardTop - 12;
+      setIsSticky(window.scrollY >= stickyThreshold);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll, { passive: true });
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const handleOpenDetails = (yearIndex?: number) => {
@@ -72,7 +95,9 @@ export const App: React.FC = () => {
     <div className="min-h-screen bg-bg-canvas flex flex-col items-center px-4 pt-6 pb-16 text-text-primary">
       <div className="w-full max-w-[393px] flex flex-col items-center gap-4">
         {/* App Title Header */}
-        <Header />
+        <div ref={headerRef} className="w-full">
+          <Header />
+        </div>
 
         {/* Morphing Result Card (Expanded in-flow -> Collapsed sticky on scroll) */}
         <ResultCard
@@ -80,7 +105,8 @@ export const App: React.FC = () => {
           yearly={result.yearly}
           horizonYears={plan.horizonYears}
           hasWithdrawals={plan.withdrawals.length > 0}
-          isCollapsed={isScrolled}
+          isCollapsed={isCollapsed}
+          isSticky={isSticky}
           onOpenDetails={handleOpenDetails}
         />
 

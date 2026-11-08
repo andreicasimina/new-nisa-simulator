@@ -44,11 +44,11 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
         <ArrowUpRight className="w-4 h-4" />
       </button>
 
-      <div className="w-full flex flex-wrap gap-1 items-start justify-center">
+      <div className="w-full flex flex-wrap gap-x-2 gap-y-0.5 items-baseline justify-center text-center">
         <span className="text-heading-20 text-text-primary whitespace-nowrap">
           {formatYen(totalMarketValue)}
         </span>
-        <span className="text-body-16 text-text-secondary whitespace-nowrap">
+        <span className="text-body-14 text-text-secondary whitespace-nowrap">
           (積立 {formatYen(tsumitateMarketValue)} | 成長 {formatYen(growthMarketValue)})
         </span>
       </div>
