@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { usePlanStore } from '@/core/store/usePlanStore';
 import { Header } from '@/ui/components/Header';
-import { ResultCard } from '@/ui/components/ResultCard';
+import { ResultCard } from '@/ui/components/result/ResultCard';
 import { BottomSheet } from '@/ui/components/sheets/BottomSheet';
 import { formatYen } from '@/ui/utils/formatters';
 
