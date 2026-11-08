@@ -7,6 +7,7 @@ import {
   MilestoneWithdrawal,
   MonthlyRecord,
   SimulationResult,
+  YearlyRecord,
 } from '../types/nisa';
 
 const MONTHS_PER_YEAR = 12;
@@ -166,6 +167,7 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
   const inYearSoldQuota = { total: 0, growth: 0 };
   let restoredPrincipalThisYear = 0;
 
+  const yearlyRecords: YearlyRecord[] = [];
   const monthlyRecords: MonthlyRecord[] = [];
   const milestoneImpacts: MilestoneImpact[] = [];
 
@@ -180,11 +182,13 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
 
   for (let yearIndex = 1; yearIndex <= state.horizonYears; yearIndex++) {
     // January 1st: Quota from previous calendar year sales becomes available
+    const quotaRestoredThisYear = inYearSoldQuota.total;
     restoredPrincipalThisYear = inYearSoldQuota.total;
     inYearSoldQuota.total = 0;
     inYearSoldQuota.growth = 0;
 
     const annualContributed: BucketAmount = { tsumitate: 0, growth: 0 };
+    const yearWithdrawnMarket: BucketAmount = { tsumitate: 0, growth: 0 };
 
     for (let monthInYear = 1; monthInYear <= MONTHS_PER_YEAR; monthInYear++) {
       const requestedDeposit: BucketAmount = {
@@ -252,6 +256,9 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
         const liquidatedTotalMarket =
           sale.liquidatedHoldings.tsumitate.marketValue + sale.liquidatedHoldings.growth.marketValue;
 
+        yearWithdrawnMarket.tsumitate += sale.liquidatedHoldings.tsumitate.marketValue;
+        yearWithdrawnMarket.growth += sale.liquidatedHoldings.growth.marketValue;
+
         inYearSoldQuota.total += liquidatedTotalPrincipal;
         inYearSoldQuota.growth += sale.liquidatedHoldings.growth.principal;
 
@@ -277,6 +284,27 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
         growth: Math.max(0, STATUTORY_LIMITS.LIFETIME_GROWTH - (currentHoldings.growth.principal + inYearSoldQuota.growth)),
       };
     }
+
+    const yearEndPrincipal = currentHoldings.tsumitate.principal + currentHoldings.growth.principal;
+    const yearEndMarketValue = currentHoldings.tsumitate.marketValue + currentHoldings.growth.marketValue;
+    const yearEndGain = Math.max(0, yearEndMarketValue - yearEndPrincipal);
+
+    yearlyRecords.push({
+      yearIndex,
+      holdings: {
+        tsumitate: { ...currentHoldings.tsumitate },
+        growth: { ...currentHoldings.growth },
+      },
+      withdrawals: { ...yearWithdrawnMarket },
+      annualContributions: { ...annualContributed },
+      cumulativeGain: yearEndGain,
+      taxSaved: yearEndGain * STATUTORY_LIMITS.TAX_RATE,
+      restoredPrincipalThisYear: quotaRestoredThisYear,
+      remainingLifetimeQuota: {
+        total: Math.max(0, STATUTORY_LIMITS.LIFETIME_AGGREGATE - (yearEndPrincipal + inYearSoldQuota.total)),
+        growth: Math.max(0, STATUTORY_LIMITS.LIFETIME_GROWTH - (currentHoldings.growth.principal + inYearSoldQuota.growth)),
+      },
+    });
   }
 
   // Calculate payback years for milestones
@@ -324,6 +352,7 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
   }
 
   return {
+    yearly: yearlyRecords,
     monthly: monthlyRecords,
     milestoneImpacts,
     summary: {

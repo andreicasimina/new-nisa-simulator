@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { simulateNisaPlan, calculateAllowedDeposit, executeWithdrawal } from '../ledger';
-import { STATUTORY_LIMITS, DEFAULT_PLAN_STATE } from '../constants';
+import { DEFAULT_PLAN_STATE } from '../constants';
 import { Holdings, MilestoneWithdrawal } from '../../types/nisa';
 import { NisaPlanState } from '../../types/state';
 
@@ -170,5 +170,71 @@ describe('simulateNisaPlan', () => {
     const month73 = result.monthly[72];
     expect(month73.restoredPrincipalThisYear).toBeGreaterThan(0);
     expect(month73.tsumitateContribution).toBe(100_000);
+  });
+
+  describe('yearly records for UI result details', () => {
+    it('produces yearly records matching horizonYears and reflects annual stats', () => {
+      const plan: NisaPlanState = {
+        ...DEFAULT_PLAN_STATE,
+        horizonYears: 5,
+        expectedReturnRate: 0.05,
+        tsumitateMonthly: 100_000,
+        growthMonthly: 100_000,
+        growthAnnualLumpSum: 500_000,
+        withdrawals: [],
+      };
+
+      const result = simulateNisaPlan(plan);
+      expect(result.yearly).toHaveLength(5);
+
+      const y1 = result.yearly[0];
+      expect(y1.yearIndex).toBe(1);
+      // Tsumitate: 12 * 100k = 1,200,000 (annual cap)
+      expect(y1.annualContributions.tsumitate).toBe(1_200_000);
+      // Growth: 12 * 100k + 500k = 1,700,000
+      expect(y1.annualContributions.growth).toBe(1_700_000);
+      expect(y1.withdrawals.tsumitate).toBe(0);
+      expect(y1.withdrawals.growth).toBe(0);
+      expect(y1.restoredPrincipalThisYear).toBe(0);
+      expect(y1.holdings.tsumitate.marketValue).toBeGreaterThan(y1.holdings.tsumitate.principal);
+      expect(y1.holdings.growth.marketValue).toBeGreaterThan(y1.holdings.growth.principal);
+
+      // Verify alignment with month 12
+      const m12 = result.monthly[11];
+      expect(y1.holdings.tsumitate.marketValue).toBe(m12.holdings.tsumitate.marketValue);
+      expect(y1.cumulativeGain).toBe(m12.cumulativeGain);
+      expect(y1.taxSaved).toBe(m12.taxSaved);
+    });
+
+    it('correctly tracks bucket-specific withdrawals and quota restoration in yearly records', () => {
+      const plan: NisaPlanState = {
+        ...DEFAULT_PLAN_STATE,
+        horizonYears: 4,
+        expectedReturnRate: 0.05,
+        tsumitateMonthly: 100_000,
+        growthMonthly: 100_000,
+        withdrawals: [
+          {
+            id: 'w1',
+            yearIndex: 2,
+            targetBucket: 'growth',
+            amount: 500_000,
+            label: 'Trip',
+          },
+        ],
+      };
+
+      const result = simulateNisaPlan(plan);
+      const y2 = result.yearly[1];
+      expect(y2.yearIndex).toBe(2);
+      expect(y2.withdrawals.growth).toBe(500_000);
+      expect(y2.withdrawals.tsumitate).toBe(0);
+
+      // In Year 3, quota restored on Jan 1 must be reflected in yearly record
+      const y3 = result.yearly[2];
+      expect(y3.yearIndex).toBe(3);
+      expect(y3.restoredPrincipalThisYear).toBeGreaterThan(0);
+      expect(y3.withdrawals.growth).toBe(0);
+    });
   });
 });

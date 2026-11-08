@@ -50,6 +50,20 @@ export interface MonthlyRecord {
   restoredPrincipalThisYear: number;
 }
 
+export interface YearlyRecord {
+  yearIndex: number;
+  holdings: Holdings;
+  withdrawals: BucketAmount;
+  annualContributions: BucketAmount;
+  cumulativeGain: number;
+  taxSaved: number;
+  restoredPrincipalThisYear: number;
+  remainingLifetimeQuota: {
+    total: number;
+    growth: number;
+  };
+}
+
 export interface MilestoneImpact {
   milestone: MilestoneWithdrawal;
   withdrawnMarketValue: number;
@@ -59,6 +73,7 @@ export interface MilestoneImpact {
 }
 
 export interface SimulationResult {
+  yearly: YearlyRecord[];
   monthly: MonthlyRecord[];
   milestoneImpacts: MilestoneImpact[];
   summary: {
