@@ -92,8 +92,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-bg-canvas flex flex-col items-center px-4 pt-6 pb-16 text-text-primary">
-      <div className="w-full max-w-[393px] flex flex-col items-center gap-4">
+    <div className="min-h-screen bg-bg-canvas flex flex-col items-center text-text-primary">
+      <div className="w-full max-w-[393px] flex-1 flex flex-col items-center px-4 pt-6 pb-4 gap-4">
         {/* App Title Header */}
         <div ref={headerRef} className="w-full">
           <Header />
@@ -123,10 +123,10 @@ export const App: React.FC = () => {
 
         {/* Share Result Button */}
         <ShareButton plan={plan} />
-
-        {/* Footer */}
-        <Footer />
       </div>
+
+      {/* Full-width Footer */}
+      <Footer />
 
       {/* Year Detail Bottom Sheet with Carousel/Stepper Navigation */}
       <ResultDetailsSheet
