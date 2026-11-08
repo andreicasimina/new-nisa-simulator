@@ -39,7 +39,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
     const growthMarketValue = lastYearRecord?.holdings.growth.marketValue ?? 0;
 
     const [expandedHeight, setExpandedHeight] = useState<number>(272);
-    const [collapsedHeight, setCollapsedHeight] = useState<number>(88);
+    const [collapsedHeight, setCollapsedHeight] = useState<number>(100);
     const containerRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
     const collapsedRef = useRef<HTMLDivElement>(null);
@@ -57,7 +57,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
         const height = collapsedRef.current.offsetHeight;
         if (height > 0) {
           // Inner content + 20px padding (p-2.5) + 2px border
-          setCollapsedHeight(Math.max(88, height + 22));
+          setCollapsedHeight(Math.max(100, height + 22));
         }
       }
     }, [summary, yearly, isCollapsed, label]);

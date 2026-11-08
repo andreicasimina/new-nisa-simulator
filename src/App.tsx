@@ -45,7 +45,7 @@ export const App: React.FC = () => {
       // Distance from top of document to top of ResultCard container (header + gap-4)
       const containerTop = headerTop + headerHeight + 16;
       const expandedHeight = 272;
-      const collapsedHeight = 88;
+      const collapsedHeight = 100;
 
       // 1. Collapse downward when scrolling past 50% of the result card
       const collapseThreshold = containerTop + expandedHeight * 0.5;
