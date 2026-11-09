@@ -1,8 +1,16 @@
-import React, { useRef, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { cn } from '@/ui/lib/utils';
 import { SimulationResult } from '@/core/types/nisa';
 import { ResultCardCollapsed } from '@/ui/components/result/ResultCardCollapsed';
 import { ResultCardExpanded } from '@/ui/components/result/ResultCardExpanded';
+
+export interface ResultCardHeights {
+  expanded: number;
+  collapsed: number;
+}
+
+/** Used until the card has been measured. */
+export const DEFAULT_CARD_HEIGHTS: ResultCardHeights = { expanded: 272, collapsed: 100 };
 
 interface ResultCardProps {
   summary: SimulationResult['summary'];
@@ -12,6 +20,8 @@ interface ResultCardProps {
   isCollapsed?: boolean;
   isSticky?: boolean;
   onOpenDetails: (year?: number) => void;
+  /** Reports the measured expanded/collapsed card heights (incl. padding and border). */
+  onHeightsChange?: (heights: ResultCardHeights) => void;
   className?: string;
 }
 
@@ -25,6 +35,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
       isCollapsed = false,
       isSticky = false,
       onOpenDetails,
+      onHeightsChange,
       className,
     },
     ref
@@ -38,29 +49,44 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
       lastYearRecord?.holdings.tsumitate.marketValue ?? 0;
     const growthMarketValue = lastYearRecord?.holdings.growth.marketValue ?? 0;
 
-    const [expandedHeight, setExpandedHeight] = useState<number>(272);
-    const [collapsedHeight, setCollapsedHeight] = useState<number>(100);
+    const [expandedHeight, setExpandedHeight] = useState<number>(DEFAULT_CARD_HEIGHTS.expanded);
+    const [collapsedHeight, setCollapsedHeight] = useState<number>(DEFAULT_CARD_HEIGHTS.collapsed);
     const containerRef = useRef<HTMLDivElement>(null);
     const cardRef = useRef<HTMLDivElement>(null);
     const collapsedRef = useRef<HTMLDivElement>(null);
+    const expandedRef = useRef<HTMLDivElement>(null);
 
     React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
 
+    // Measure both contents continuously. The hidden one is pinned to the top
+    // (not stretched), so its offsetHeight is always its natural height.
     useLayoutEffect(() => {
-      if (cardRef.current && !isCollapsed) {
-        const height = cardRef.current.offsetHeight;
-        if (height > 100) {
-          setExpandedHeight(height);
-        }
-      }
-      if (collapsedRef.current) {
-        const height = collapsedRef.current.offsetHeight;
-        if (height > 0) {
-          // Inner content + 20px padding (p-2.5) + 2px border
-          setCollapsedHeight(Math.max(100, height + 22));
-        }
-      }
-    }, [summary, yearly, isCollapsed, label]);
+      const card = cardRef.current;
+      const collapsed = collapsedRef.current;
+      const expanded = expandedRef.current;
+      if (!card || !collapsed || !expanded) return;
+
+      const measure = () => {
+        const style = getComputedStyle(card);
+        const chrome =
+          parseFloat(style.paddingTop) +
+          parseFloat(style.paddingBottom) +
+          parseFloat(style.borderTopWidth) +
+          parseFloat(style.borderBottomWidth);
+        setExpandedHeight(expanded.offsetHeight + chrome);
+        setCollapsedHeight(collapsed.offsetHeight + chrome);
+      };
+
+      measure();
+      const observer = new ResizeObserver(measure);
+      observer.observe(collapsed);
+      observer.observe(expanded);
+      return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+      onHeightsChange?.({ expanded: expandedHeight, collapsed: collapsedHeight });
+    }, [expandedHeight, collapsedHeight, onHeightsChange]);
 
     return (
       <div
@@ -99,7 +125,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
                 'w-full transition-opacity duration-200 ease-in-out',
                 isCollapsed
                   ? 'opacity-100 pointer-events-auto'
-                  : 'opacity-0 pointer-events-none absolute inset-0'
+                  : 'opacity-0 pointer-events-none absolute inset-x-0 top-0'
               )}
             >
               <ResultCardCollapsed
@@ -113,11 +139,12 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
 
             {/* Expanded content with fade in/out */}
             <div
+              ref={expandedRef}
               className={cn(
                 'w-full transition-opacity duration-200 ease-in-out',
                 !isCollapsed
                   ? 'opacity-100 pointer-events-auto'
-                  : 'opacity-0 pointer-events-none absolute inset-0'
+                  : 'opacity-0 pointer-events-none absolute inset-x-0 top-0'
               )}
             >
               <ResultCardExpanded

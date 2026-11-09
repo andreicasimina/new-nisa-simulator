@@ -8,6 +8,9 @@
   --color-bg-canvas: #f9fafb;
   --color-bg-input: #f3f4f6;
   --color-border-subtle: #e5e7eb;
+  --color-gain: #00bc7d;
+  --color-principal: #90a1b9;
+  --color-withdrawal: #f59e0b;
 }
 
 @layer base {
@@ -52,5 +55,20 @@
     font-size: 12px;
     font-weight: 500;
     line-height: 17px;
+  }
+  .text-caption-12-bold {
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 17px;
+  }
+  .text-caption-10 {
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 12px;
+  }
+  .text-caption-10-bold {
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 12px;
   }
 }

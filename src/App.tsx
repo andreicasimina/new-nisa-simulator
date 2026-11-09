@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePlanStore } from '@/core/store/usePlanStore';
 import { Header } from '@/ui/components/Header';
-import { ResultCard } from '@/ui/components/result/ResultCard';
+import {
+  ResultCard,
+  ResultCardHeights,
+  DEFAULT_CARD_HEIGHTS,
+} from '@/ui/components/result/ResultCard';
 import { InputCard } from '@/ui/components/form/InputCard';
 import { ShareButton } from '@/ui/components/common/ShareButton';
 import { Footer } from '@/ui/components/Footer';
@@ -24,6 +28,7 @@ export const App: React.FC = () => {
 
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isSticky, setIsSticky] = useState(false);
+  const [cardHeights, setCardHeights] = useState<ResultCardHeights>(DEFAULT_CARD_HEIGHTS);
   const headerRef = useRef<HTMLDivElement>(null);
 
   // Sheet states
@@ -44,8 +49,7 @@ export const App: React.FC = () => {
 
       // Distance from top of document to top of ResultCard container (header + gap-4)
       const containerTop = headerTop + headerHeight + 16;
-      const expandedHeight = 272;
-      const collapsedHeight = 100;
+      const { expanded: expandedHeight, collapsed: collapsedHeight } = cardHeights;
 
       // 1. Collapse downward when scrolling past 25% of the result card
       const collapseThreshold = containerTop + expandedHeight * 0.25;
@@ -64,7 +68,7 @@ export const App: React.FC = () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
     };
-  }, []);
+  }, [cardHeights]);
 
   const handleOpenDetails = (yearIndex?: number) => {
     setSelectedYear(yearIndex ?? plan.horizonYears);
@@ -108,6 +112,7 @@ export const App: React.FC = () => {
           isCollapsed={isCollapsed}
           isSticky={isSticky}
           onOpenDetails={handleOpenDetails}
+          onHeightsChange={setCardHeights}
         />
 
         {/* Form Inputs Section */}
