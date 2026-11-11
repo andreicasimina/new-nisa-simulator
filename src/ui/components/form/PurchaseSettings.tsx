@@ -28,9 +28,7 @@ export const PurchaseSettings: React.FC<PurchaseSettingsProps> = ({
   return (
     <div className={cn('flex flex-col gap-3 w-full', className)}>
       <div className="flex items-center gap-1">
-        <h3 className="text-body-14-semibold text-text-primary">
-          購入設定
-        </h3>
+        <h3 className="text-body-14-semibold text-text-primary">購入設定</h3>
         {onOpenPurchaseInfo && (
           <InfoButton onClick={onOpenPurchaseInfo} ariaLabel="購入設定の説明" />
         )}

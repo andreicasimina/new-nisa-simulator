@@ -14,7 +14,9 @@ export const InfoBanner: React.FC<InfoBannerProps> = ({ className }) => {
         className
       )}
     >
-      <Info className="size-3.5 text-text-primary shrink-0" />
+      <div className="size-3.5 shrink-0 flex items-center justify-center">
+        <Info className="size-3 fill-text-muted stroke-border-subtle block" />
+      </div>
       <span className="text-body-14 text-text-primary select-none whitespace-nowrap">
         入力に迷ったら各項目のヒントをタップ！
       </span>

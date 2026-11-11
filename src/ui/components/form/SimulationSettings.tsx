@@ -33,9 +33,7 @@ export const SimulationSettings: React.FC<SimulationSettingsProps> = ({
         {/* Return Rate */}
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1">
-            <label className="text-caption-12 text-text-secondary">
-              想定利回り
-            </label>
+            <label className="text-caption-12 text-text-secondary -mr-0.5">想定利回り</label>
             {onOpenReturnInfo && (
               <InfoButton onClick={onOpenReturnInfo} ariaLabel="想定利回りの説明" />
             )}
@@ -50,9 +48,7 @@ export const SimulationSettings: React.FC<SimulationSettingsProps> = ({
         {/* Years of Operation */}
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-1">
-            <label className="text-caption-12 text-text-secondary">
-              運用年数
-            </label>
+            <label className="text-caption-12 text-text-secondary">運用年数</label>
             {onOpenYearsInfo && (
               <InfoButton onClick={onOpenYearsInfo} ariaLabel="運用年数の説明" />
             )}

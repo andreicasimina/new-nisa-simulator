@@ -19,11 +19,11 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
       onClick={onClick}
       aria-label={ariaLabel}
       className={cn(
-        'inline-flex items-center justify-center p-0.5 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer',
+        'size-3.5 p-0 border-0 leading-none inline-flex items-center justify-center text-text-muted hover:text-text-secondary transition-colors cursor-pointer shrink-0',
         className
       )}
     >
-      <Info className="w-3.5 h-3.5" />
+      <Info className="size-3 fill-current stroke-bg-canvas block" />
     </button>
   );
 };
