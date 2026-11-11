@@ -1,8 +1,10 @@
 import React from 'react';
 import { cn } from '@/ui/lib/utils';
 import { YearlyRecord } from '@/core/types/nisa';
+import { NisaPlanState } from '@/core/types/state';
 import { formatYen } from '@/ui/utils/formatters';
 import { BarChartPreview } from '@/ui/components/charts/BarChartPreview';
+import { ShareButton } from '@/ui/components/common/ShareButton';
 
 interface ResultCardExpandedProps {
   label: string;
@@ -10,6 +12,7 @@ interface ResultCardExpandedProps {
   totalPrincipal: number;
   totalGain: number;
   yearly: YearlyRecord[];
+  plan: NisaPlanState;
   onOpenDetails: (year?: number) => void;
   className?: string;
 }
@@ -20,6 +23,7 @@ export const ResultCardExpanded: React.FC<ResultCardExpandedProps> = ({
   totalPrincipal,
   totalGain,
   yearly,
+  plan,
   onOpenDetails,
   className,
 }) => {
@@ -37,10 +41,17 @@ export const ResultCardExpanded: React.FC<ResultCardExpandedProps> = ({
         </p>
       </div>
 
-      <BarChartPreview
-        yearly={yearly}
-        onSelectYear={(year) => onOpenDetails(year)}
-      />
+      <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+
+      <div className="w-full flex flex-col gap-2.5 items-center">
+        <BarChartPreview
+          yearly={yearly}
+          onSelectYear={(year) => onOpenDetails(year)}
+          className="p-[5px]"
+        />
+        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+        <ShareButton plan={plan} className="w-full max-w-[327px]" />
+      </div>
     </div>
   );
 };

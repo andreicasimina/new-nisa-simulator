@@ -7,7 +7,6 @@ import {
   DEFAULT_CARD_HEIGHTS,
 } from '@/ui/components/result/ResultCard';
 import { InputCard } from '@/ui/components/form/InputCard';
-import { ShareButton } from '@/ui/components/common/ShareButton';
 import { Footer } from '@/ui/components/Footer';
 import { ResultDetailsSheet } from '@/ui/components/sheets/ResultDetailsSheet';
 import { WithdrawalSheet } from '@/ui/components/sheets/WithdrawalSheet';
@@ -109,6 +108,7 @@ export const App: React.FC = () => {
           yearly={result.yearly}
           horizonYears={plan.horizonYears}
           hasWithdrawals={plan.withdrawals.length > 0}
+          plan={plan}
           isCollapsed={isCollapsed}
           isSticky={isSticky}
           onOpenDetails={handleOpenDetails}
@@ -125,9 +125,6 @@ export const App: React.FC = () => {
           onOpenYearsInfo={() => setIsYearsInfoOpen(true)}
           onOpenPurchaseInfo={() => setIsPurchaseInfoOpen(true)}
         />
-
-        {/* Share Result Button */}
-        <ShareButton plan={plan} />
       </div>
 
       {/* Full-width Footer */}

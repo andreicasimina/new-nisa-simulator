@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import { cn } from '@/ui/lib/utils';
 import { SimulationResult } from '@/core/types/nisa';
+import { NisaPlanState } from '@/core/types/state';
 import { ResultCardCollapsed } from '@/ui/components/result/ResultCardCollapsed';
 import { ResultCardExpanded } from '@/ui/components/result/ResultCardExpanded';
 
@@ -10,13 +11,14 @@ export interface ResultCardHeights {
 }
 
 /** Used until the card has been measured. */
-export const DEFAULT_CARD_HEIGHTS: ResultCardHeights = { expanded: 272, collapsed: 100 };
+export const DEFAULT_CARD_HEIGHTS: ResultCardHeights = { expanded: 512, collapsed: 100 };
 
 interface ResultCardProps {
   summary: SimulationResult['summary'];
   yearly: SimulationResult['yearly'];
   horizonYears: number;
   hasWithdrawals: boolean;
+  plan: NisaPlanState;
   isCollapsed?: boolean;
   isSticky?: boolean;
   onOpenDetails: (year?: number) => void;
@@ -32,6 +34,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
       yearly,
       horizonYears,
       hasWithdrawals,
+      plan,
       isCollapsed = false,
       isSticky = false,
       onOpenDetails,
@@ -153,6 +156,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
                 totalPrincipal={summary.finalPrincipal}
                 totalGain={summary.finalGain}
                 yearly={yearly}
+                plan={plan}
                 onOpenDetails={onOpenDetails}
               />
             </div>

@@ -47,19 +47,19 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => 
       type="button"
       onClick={handleShare}
       className={cn(
-        'w-full py-2.5 px-4 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-16 rounded-2xl flex items-center justify-center gap-2 transition-colors cursor-pointer active:scale-[0.99]',
+        'w-full p-2.5 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-14-semibold rounded-2xl flex items-center justify-center gap-2.5 transition-colors cursor-pointer active:scale-[0.99]',
         className
       )}
     >
       {copied ? (
         <>
-          <Check className="w-4 h-4 text-emerald-600" />
-          <span className="text-emerald-700 font-medium">URLをコピーしました！</span>
+          <Check className="size-6 text-emerald-600 shrink-0" />
+          <span className="text-emerald-700 font-semibold whitespace-nowrap">URLをコピーしました！</span>
         </>
       ) : (
         <>
-          <Share2 className="w-4 h-4 text-text-primary" />
-          <span>結果をシェア</span>
+          <Share2 className="size-6 text-text-primary shrink-0" />
+          <span className="whitespace-nowrap">結果を保存・シェア</span>
         </>
       )}
     </button>
