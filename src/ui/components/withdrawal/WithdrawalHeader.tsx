@@ -12,7 +12,7 @@ interface WithdrawalHeaderProps {
 export const WithdrawalHeader: React.FC<WithdrawalHeaderProps> = ({
   isExpanded,
   onToggle,
-  count,
+  count = 0,
   className,
 }) => {
   return (
@@ -25,11 +25,8 @@ export const WithdrawalHeader: React.FC<WithdrawalHeaderProps> = ({
       )}
     >
       <span className="text-body-14-semibold text-text-primary group-hover:text-text-secondary transition-colors">
-        売却設定
+        売却設定 ({count})
       </span>
-      {count !== undefined && count > 0 && (
-        <span className="text-caption-12 text-text-muted">({count})</span>
-      )}
       {isExpanded ? (
         <ChevronUp className="w-3.5 h-3.5 text-text-primary transition-transform" />
       ) : (
