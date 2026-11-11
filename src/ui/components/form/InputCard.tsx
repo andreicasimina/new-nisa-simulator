@@ -67,7 +67,7 @@ export const InputCard: React.FC<InputCardProps> = ({
   return (
     <div
       className={cn(
-        'w-full max-w-[361px] bg-bg-surface border border-border-subtle rounded-2xl p-4 flex flex-col gap-4 shadow-sm',
+        'w-full max-w-[361px] bg-bg-surface border border-border-subtle rounded-lg p-4 flex flex-col gap-3',
         className
       )}
     >
@@ -75,55 +75,51 @@ export const InputCard: React.FC<InputCardProps> = ({
       <AccountSelector mode={accountMode} onChange={handleModeChange} />
 
       {/* Info Hint Banner */}
-      <InfoBanner />
+      <div className="w-full flex flex-col items-center">
+        <InfoBanner />
+      </div>
 
       {/* Initial Holdings (Only shown when 'existing' account is active) */}
       {accountMode === 'existing' && (
-        <div className="border-b border-border-subtle pb-4">
-          <InitialHoldingsSection
-            holdings={plan.initialHoldings}
-            onChange={handleHoldingsChange}
-          />
-        </div>
+        <InitialHoldingsSection
+          holdings={plan.initialHoldings}
+          onChange={handleHoldingsChange}
+        />
       )}
 
       {/* Basic Simulation Settings */}
-      <div className="border-b border-border-subtle pb-4">
-        <SimulationSettings
-          expectedReturnRate={plan.expectedReturnRate}
-          horizonYears={plan.horizonYears}
-          onReturnRateChange={(expectedReturnRate) =>
-            onPlanUpdate({ expectedReturnRate })
-          }
-          onHorizonYearsChange={(horizonYears) =>
-            onPlanUpdate({ horizonYears })
-          }
-          onOpenReturnInfo={onOpenReturnInfo}
-          onOpenYearsInfo={onOpenYearsInfo}
-        />
-      </div>
+      <SimulationSettings
+        expectedReturnRate={plan.expectedReturnRate}
+        horizonYears={plan.horizonYears}
+        onReturnRateChange={(expectedReturnRate) =>
+          onPlanUpdate({ expectedReturnRate })
+        }
+        onHorizonYearsChange={(horizonYears) =>
+          onPlanUpdate({ horizonYears })
+        }
+        onOpenReturnInfo={onOpenReturnInfo}
+        onOpenYearsInfo={onOpenYearsInfo}
+      />
 
       {/* Purchase Settings */}
-      <div className="border-b border-border-subtle pb-4">
-        <PurchaseSettings
-          tsumitateMonthly={plan.tsumitateMonthly}
-          growthMonthly={plan.growthMonthly}
-          growthAnnualLumpSum={plan.growthAnnualLumpSum}
-          onTsumitateMonthlyChange={(tsumitateMonthly) =>
-            onPlanUpdate({ tsumitateMonthly })
-          }
-          onGrowthMonthlyChange={(growthMonthly) =>
-            onPlanUpdate({ growthMonthly })
-          }
-          onGrowthAnnualLumpSumChange={(growthAnnualLumpSum) =>
-            onPlanUpdate({ growthAnnualLumpSum })
-          }
-          onOpenPurchaseInfo={onOpenPurchaseInfo}
-        />
-      </div>
+      <PurchaseSettings
+        tsumitateMonthly={plan.tsumitateMonthly}
+        growthMonthly={plan.growthMonthly}
+        growthAnnualLumpSum={plan.growthAnnualLumpSum}
+        onTsumitateMonthlyChange={(tsumitateMonthly) =>
+          onPlanUpdate({ tsumitateMonthly })
+        }
+        onGrowthMonthlyChange={(growthMonthly) =>
+          onPlanUpdate({ growthMonthly })
+        }
+        onGrowthAnnualLumpSumChange={(growthAnnualLumpSum) =>
+          onPlanUpdate({ growthAnnualLumpSum })
+        }
+        onOpenPurchaseInfo={onOpenPurchaseInfo}
+      />
 
       {/* Withdrawal List Section */}
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 w-full">
         <WithdrawalHeader
           isExpanded={isWithdrawalExpanded}
           onToggle={() => setIsWithdrawalExpanded(!isWithdrawalExpanded)}
@@ -131,13 +127,13 @@ export const InputCard: React.FC<InputCardProps> = ({
         />
 
         {isWithdrawalExpanded && (
-          <div className="flex flex-col gap-3 pt-1">
+          <>
             <WithdrawalList
               withdrawals={plan.withdrawals}
               onEdit={onEditWithdrawalClick}
             />
             <AddWithdrawalButton onClick={onAddWithdrawalClick} />
-          </div>
+          </>
         )}
       </div>
     </div>
