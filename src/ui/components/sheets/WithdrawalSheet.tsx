@@ -3,8 +3,8 @@ import { BottomSheet } from './BottomSheet';
 import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
 import { LabeledField } from '@/ui/components/common/LabeledField';
 import { Button } from '@/ui/components/common/Button';
+import { SegmentedControl, SegmentedOption } from '@/ui/components/common/SegmentedControl';
 import { InputUnit } from '@/ui/types/units';
-import { ChevronDown } from 'lucide-react';
 
 interface WithdrawalSheetProps {
   isOpen: boolean;
@@ -15,10 +15,10 @@ interface WithdrawalSheetProps {
   onDelete?: (id: string) => void;
 }
 
-const BUCKET_OPTIONS: { type: BucketType; label: string }[] = [
-  { type: 'growth', label: '成長投資枠' },
-  { type: 'tsumitate', label: 'つみたて投資枠' },
-  { type: 'proportional', label: '按分（両方）' },
+const BUCKET_OPTIONS: readonly SegmentedOption<BucketType>[] = [
+  { value: 'growth', label: '成長投資枠' },
+  { value: 'tsumitate', label: 'つみたて投資枠' },
+  { value: 'proportional', label: '按分（両方）' },
 ];
 
 export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
@@ -105,20 +105,12 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           <label className="text-caption-12 text-text-secondary">
             売却元
           </label>
-          <div className="relative bg-bg-input flex items-center rounded-lg px-2 py-1 border border-transparent focus-within:border-text-primary transition-colors">
-            <select
-              value={targetBucket}
-              onChange={(e) => setTargetBucket(e.target.value as BucketType)}
-              className="w-full appearance-none bg-transparent text-body-16 text-text-primary pr-6 focus:outline-none cursor-pointer"
-            >
-              {BUCKET_OPTIONS.map((opt) => (
-                <option key={opt.type} value={opt.type}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-4 h-4 text-text-primary pointer-events-none absolute right-2.5" />
-          </div>
+          <SegmentedControl
+            options={BUCKET_OPTIONS}
+            value={targetBucket}
+            onChange={setTargetBucket}
+            fullWidth
+          />
         </div>
 
         {/* Withdrawal Amount */}
