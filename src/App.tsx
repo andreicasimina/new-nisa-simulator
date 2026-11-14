@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { usePlanStore } from '@/core/store/usePlanStore';
 import { Header } from '@/ui/components/Header';
 import {
@@ -6,6 +6,7 @@ import {
   ResultCardHeights,
   DEFAULT_CARD_HEIGHTS,
 } from '@/ui/components/result/ResultCard';
+import { useStickyCollapse } from '@/ui/hooks/useStickyCollapse';
 import { InputCard } from '@/ui/components/form/InputCard';
 import { Footer } from '@/ui/components/Footer';
 import { ResultDetailsSheet } from '@/ui/components/sheets/ResultDetailsSheet';
@@ -75,44 +76,12 @@ export const App: React.FC = () => {
     removeWithdrawal,
   } = usePlanStore();
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isSticky, setIsSticky] = useState(false);
   const [cardHeights, setCardHeights] = useState<ResultCardHeights>(DEFAULT_CARD_HEIGHTS);
   const headerRef = useRef<HTMLDivElement>(null);
+  const { isCollapsed, isSticky } = useStickyCollapse(headerRef, cardHeights);
 
   const [activeSheet, setActiveSheet] = useState<ActiveSheet>(null);
   const closeSheet = () => setActiveSheet(null);
-
-  // Monitor scroll position: collapse first, then turn sticky when scrolling further down
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!headerRef.current) return;
-      const headerRect = headerRef.current.getBoundingClientRect();
-      const headerTop = headerRect.top + window.scrollY;
-      const headerHeight = headerRef.current.offsetHeight;
-
-      // Distance from top of document to top of ResultCard container (header + gap-4)
-      const containerTop = headerTop + headerHeight + 16;
-      const { expanded: expandedHeight, collapsed: collapsedHeight } = cardHeights;
-
-      // 1. Collapse downward when scrolling past 25% of the result card
-      const collapseThreshold = containerTop + expandedHeight * 0.25;
-      setIsCollapsed(window.scrollY >= collapseThreshold);
-
-      // 2. Turn sticky when the collapsed card (at bottom of container) reaches top-3 (12px)
-      const collapsedCardTop = containerTop + expandedHeight - collapsedHeight;
-      const stickyThreshold = collapsedCardTop - 12;
-      setIsSticky(window.scrollY >= stickyThreshold);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('resize', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleScroll);
-    };
-  }, [cardHeights]);
 
   const handleOpenDetails = (yearIndex?: number) => {
     setActiveSheet({

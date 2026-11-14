@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 import { YearlyRecord } from '@/core/types/nisa';
 import { formatYen } from '@/ui/utils/formatters';
+import { sumHoldings } from '@/ui/utils/holdings';
 import { niceValueAxis } from '@/ui/utils/chartScale';
 
 type ChartMode = 'detailed' | 'all';
@@ -46,12 +47,8 @@ interface BarChartPreviewProps {
 }
 
 const toBar = (record: YearlyRecord): ChartBar => {
-  const marketValue =
-    record.holdings.tsumitate.marketValue + record.holdings.growth.marketValue;
-  const rawPrincipal =
-    record.holdings.tsumitate.principal + record.holdings.growth.principal;
+  const { marketValue, principal: rawPrincipal, gain } = sumHoldings(record.holdings);
   const principal = Math.min(rawPrincipal, marketValue);
-  const gain = Math.max(0, marketValue - rawPrincipal);
   const withdrawal = record.withdrawals.tsumitate + record.withdrawals.growth;
 
   return {

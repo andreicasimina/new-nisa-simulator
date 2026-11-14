@@ -27,39 +27,40 @@ interface ResultCardProps {
   className?: string;
 }
 
-export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
-  (
-    {
-      summary,
-      yearly,
-      horizonYears,
-      hasWithdrawals,
-      plan,
-      isCollapsed = false,
-      isSticky = false,
-      onOpenDetails,
-      onHeightsChange,
-      className,
-    },
-    ref
-  ) => {
-    const label = hasWithdrawals
-      ? `${horizonYears}年目・売却後の資産額`
-      : `${horizonYears}年目・資産額`;
+const fadeClass = (visible: boolean) =>
+  cn(
+    'w-full transition-opacity duration-200 ease-in-out',
+    visible
+      ? 'opacity-100 pointer-events-auto'
+      : 'opacity-0 pointer-events-none absolute inset-x-0 top-0'
+  );
 
-    const lastYearRecord = yearly[yearly.length - 1];
-    const tsumitateMarketValue =
-      lastYearRecord?.holdings.tsumitate.marketValue ?? 0;
-    const growthMarketValue = lastYearRecord?.holdings.growth.marketValue ?? 0;
+export const ResultCard: React.FC<ResultCardProps> = ({
+  summary,
+  yearly,
+  horizonYears,
+  hasWithdrawals,
+  plan,
+  isCollapsed = false,
+  isSticky = false,
+  onOpenDetails,
+  onHeightsChange,
+  className,
+}) => {
+  const label = hasWithdrawals
+    ? `${horizonYears}年目・売却後の資産額`
+    : `${horizonYears}年目・資産額`;
 
-    const [expandedHeight, setExpandedHeight] = useState<number>(DEFAULT_CARD_HEIGHTS.expanded);
-    const [collapsedHeight, setCollapsedHeight] = useState<number>(DEFAULT_CARD_HEIGHTS.collapsed);
-    const containerRef = useRef<HTMLDivElement>(null);
-    const cardRef = useRef<HTMLDivElement>(null);
-    const collapsedRef = useRef<HTMLDivElement>(null);
-    const expandedRef = useRef<HTMLDivElement>(null);
+  const lastYearRecord = yearly[yearly.length - 1];
+  const tsumitateMarketValue =
+    lastYearRecord?.holdings.tsumitate.marketValue ?? 0;
+  const growthMarketValue = lastYearRecord?.holdings.growth.marketValue ?? 0;
 
-    React.useImperativeHandle(ref, () => containerRef.current as HTMLDivElement);
+  const [expandedHeight, setExpandedHeight] = useState<number>(DEFAULT_CARD_HEIGHTS.expanded);
+  const [collapsedHeight, setCollapsedHeight] = useState<number>(DEFAULT_CARD_HEIGHTS.collapsed);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const collapsedRef = useRef<HTMLDivElement>(null);
+  const expandedRef = useRef<HTMLDivElement>(null);
 
     // Measure both contents continuously. The hidden one is pinned to the top
     // (not stretched), so its offsetHeight is always its natural height.
@@ -93,7 +94,6 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
 
     return (
       <div
-        ref={containerRef}
         className={cn('w-full relative flex flex-col justify-end', className)}
         style={{ height: expandedHeight }}
       >
@@ -122,15 +122,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
         >
           <div className="relative w-full h-full">
             {/* Collapsed content with fade in/out */}
-            <div
-              ref={collapsedRef}
-              className={cn(
-                'w-full transition-opacity duration-200 ease-in-out',
-                isCollapsed
-                  ? 'opacity-100 pointer-events-auto'
-                  : 'opacity-0 pointer-events-none absolute inset-x-0 top-0'
-              )}
-            >
+            <div ref={collapsedRef} className={fadeClass(isCollapsed)}>
               <ResultCardCollapsed
                 label={label}
                 totalMarketValue={summary.finalMarketValue}
@@ -141,15 +133,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
             </div>
 
             {/* Expanded content with fade in/out */}
-            <div
-              ref={expandedRef}
-              className={cn(
-                'w-full transition-opacity duration-200 ease-in-out',
-                !isCollapsed
-                  ? 'opacity-100 pointer-events-auto'
-                  : 'opacity-0 pointer-events-none absolute inset-x-0 top-0'
-              )}
-            >
+            <div ref={expandedRef} className={fadeClass(!isCollapsed)}>
               <ResultCardExpanded
                 label={label}
                 totalMarketValue={summary.finalMarketValue}
@@ -164,7 +148,4 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
         </div>
       </div>
     );
-  }
-);
-
-ResultCard.displayName = 'ResultCard';
+};
