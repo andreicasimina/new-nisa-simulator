@@ -236,5 +236,17 @@ describe('simulateNisaPlan', () => {
       expect(y3.restoredPrincipalThisYear).toBeGreaterThan(0);
       expect(y3.withdrawals.growth).toBe(0);
     });
+
+    it('safely handles horizonYears <= 0 without crashing', () => {
+      const plan: NisaPlanState = {
+        ...DEFAULT_PLAN_STATE,
+        horizonYears: 0,
+      };
+
+      expect(() => simulateNisaPlan(plan)).not.toThrow();
+      const result = simulateNisaPlan(plan);
+      expect(result.yearly.length).toBeGreaterThanOrEqual(1);
+      expect(result.summary.finalMarketValue).toBeGreaterThan(0);
+    });
   });
 });

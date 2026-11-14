@@ -157,7 +157,8 @@ export function executeWithdrawal(
 }
 
 export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
-  const monthlyRate = Math.pow(1 + state.expectedReturnRate, 1 / MONTHS_PER_YEAR) - 1;
+  const horizonYears = Math.max(1, state.horizonYears || 1);
+  const monthlyRate = Math.pow(1 + Math.max(0, state.expectedReturnRate || 0), 1 / MONTHS_PER_YEAR) - 1;
 
   const currentHoldings: Holdings = {
     tsumitate: { ...state.initialHoldings.tsumitate },
@@ -180,7 +181,7 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
 
   let monthIndex = 1;
 
-  for (let yearIndex = 1; yearIndex <= state.horizonYears; yearIndex++) {
+  for (let yearIndex = 1; yearIndex <= horizonYears; yearIndex++) {
     // January 1st: Quota from previous calendar year sales becomes available
     const quotaRestoredThisYear = inYearSoldQuota.total;
     restoredPrincipalThisYear = inYearSoldQuota.total;
@@ -316,7 +317,7 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
     let paybackYear: number | null = null;
 
     // Check when lifetime quota fills back to capacity
-    for (let year = restoredYear; year <= state.horizonYears; year++) {
+    for (let year = restoredYear; year <= horizonYears; year++) {
       const yearEndRecord = monthlyRecords[year * MONTHS_PER_YEAR - 1];
       if (yearEndRecord && yearEndRecord.remainingLifetimeQuota.total === 0) {
         paybackYear = year;
@@ -328,7 +329,7 @@ export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
     if (paybackYear === null && annualSavingsPace > 0) {
       const yearsNeeded = Math.ceil(impact.withdrawnPrincipal / annualSavingsPace);
       const estimatedYear = restoredYear + yearsNeeded - 1;
-      if (estimatedYear <= state.horizonYears) {
+      if (estimatedYear <= horizonYears) {
         paybackYear = estimatedYear;
       }
     }
