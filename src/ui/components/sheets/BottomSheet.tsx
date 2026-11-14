@@ -67,7 +67,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
           }
         }}
         className={cn(
-          'relative z-10 w-full max-w-[393px] bg-white rounded-t-2xl sm:rounded-b-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden',
+          'relative z-10 w-full max-w-[393px] bg-bg-surface rounded-t-2xl sm:rounded-b-2xl shadow-[0px_-4px_20px_0px_rgba(0,0,0,0.08)] flex flex-col max-h-[90vh] overflow-hidden',
           isClosing ? 'animate-slide-down' : 'animate-slide-up',
           className
         )}
@@ -79,7 +79,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 
         <div className="relative px-4 py-2 flex items-center justify-center shrink-0 min-h-[40px]">
           {title && (
-            <h3 className="font-semibold text-[14px] text-gray-900 leading-[20px]">
+            <h3 className="text-body-14-semibold text-text-primary">
               {title}
             </h3>
           )}
