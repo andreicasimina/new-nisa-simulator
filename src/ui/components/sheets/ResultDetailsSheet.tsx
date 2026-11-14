@@ -50,16 +50,16 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
 
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col gap-4 p-1 pb-4">
+      <div className="flex flex-col gap-4">
         {/* Custom Header with Prev / Year / Next */}
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex items-center justify-center gap-1">
           <IconButton
             tone="secondary"
             disabled={!canGoPrev}
             onClick={() => canGoPrev && onYearChange(yearIndex - 1)}
             aria-label="前年へ"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="size-3" />
           </IconButton>
           <span className="text-body-14-semibold text-text-primary">
             {yearIndex}年目
@@ -70,12 +70,12 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
             onClick={() => canGoNext && onYearChange(yearIndex + 1)}
             aria-label="次年へ"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="size-3" />
           </IconButton>
         </div>
 
         {/* Total Holdings Hero */}
-        <div className="flex flex-col items-center gap-1 text-center border-b border-border-subtle pb-4">
+        <div className="flex flex-col items-center gap-[9px] text-center">
           <span className="text-caption-12 text-text-secondary">
             想定資産額（売却前）
           </span>
@@ -104,11 +104,11 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
         {/* Section 2: 売却予定額 */}
         <StatSection title="売却予定額">
           <StatCell
-            label="積立 (売却額)"
+            label="積立 (評価額)"
             value={formatYen(currentRecord.withdrawals.tsumitate)}
           />
           <StatCell
-            label="成長 (売却額)"
+            label="成長 (評価額)"
             value={formatYen(currentRecord.withdrawals.growth)}
           />
         </StatSection>

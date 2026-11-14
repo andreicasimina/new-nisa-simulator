@@ -20,11 +20,11 @@ export const StatCell: React.FC<StatCellProps> = ({
   className,
 }) => {
   return (
-    <div className={cn('flex flex-col gap-0.5', className)}>
+    <div className={cn('flex flex-col gap-1', className)}>
       <span className="text-caption-12 text-text-secondary">{label}</span>
       <span className="text-body-16 text-text-primary font-medium">{value}</span>
       {sub && (
-        <span className={cn('text-caption-12 text-text-muted', subClassName)}>
+        <span className={cn('text-body-14 text-text-secondary', subClassName)}>
           {sub}
         </span>
       )}
@@ -49,7 +49,7 @@ export const StatSection: React.FC<StatSectionProps> = ({
   children,
 }) => {
   return (
-    <div className={cn('flex flex-col gap-2', className)}>
+    <div className={cn('flex flex-col gap-3', className)}>
       <h4 className="text-body-14-semibold text-text-primary">{title}</h4>
       <div
         className={cn(
