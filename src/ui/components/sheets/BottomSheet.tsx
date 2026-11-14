@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 import { Backdrop } from '@/ui/components/common/Backdrop';
+import { IconButton } from '@/ui/components/common/IconButton';
 
 interface BottomSheetProps {
   isOpen: boolean;
@@ -83,14 +84,13 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
               {title}
             </h3>
           )}
-          <button
-            type="button"
+          <IconButton
             onClick={onClose}
-            className="absolute right-4 top-2.5 p-1 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+            className="absolute right-4 top-2.5"
             aria-label="閉じる"
           >
             <X className="w-4 h-4" />
-          </button>
+          </IconButton>
         </div>
         <div className="overflow-y-auto px-4 pb-6 pt-1 flex-1">
           {children}

@@ -4,6 +4,7 @@ import { YearlyRecord, MilestoneWithdrawal } from '@/core/types/nisa';
 import { formatYen } from '@/ui/utils/formatters';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { STATUTORY_LIMITS } from '@/core/engine/constants';
+import { IconButton } from '@/ui/components/common/IconButton';
 
 interface ResultDetailsSheetProps {
   isOpen: boolean;
@@ -70,27 +71,25 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
       <div className="flex flex-col gap-4 p-1 pb-4">
         {/* Custom Header with Prev / Year / Next */}
         <div className="flex items-center justify-center gap-3">
-          <button
-            type="button"
+          <IconButton
+            tone="secondary"
             disabled={!canGoPrev}
             onClick={() => canGoPrev && onYearChange(yearIndex - 1)}
-            className="p-1 rounded-md text-text-secondary hover:text-text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             aria-label="前年へ"
           >
             <ChevronLeft className="w-5 h-5" />
-          </button>
+          </IconButton>
           <span className="text-body-14-semibold text-text-primary">
             {yearIndex}年目
           </span>
-          <button
-            type="button"
+          <IconButton
+            tone="secondary"
             disabled={!canGoNext}
             onClick={() => canGoNext && onYearChange(yearIndex + 1)}
-            className="p-1 rounded-md text-text-secondary hover:text-text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
             aria-label="次年へ"
           >
             <ChevronRight className="w-5 h-5" />
-          </button>
+          </IconButton>
         </div>
 
         {/* Total Holdings Hero */}

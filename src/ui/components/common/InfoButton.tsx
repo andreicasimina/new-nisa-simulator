@@ -1,6 +1,7 @@
 import React from 'react';
 import { Info } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
+import { IconButton } from './IconButton';
 
 interface InfoButtonProps {
   onClick: () => void;
@@ -14,16 +15,13 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
   className,
 }) => {
   return (
-    <button
-      type="button"
+    <IconButton
+      size="none"
       onClick={onClick}
       aria-label={ariaLabel}
-      className={cn(
-        'size-3.5 p-0 border-0 leading-none inline-flex items-center justify-center text-text-muted hover:text-text-secondary transition-colors cursor-pointer shrink-0',
-        className
-      )}
+      className={cn('size-3.5 border-0 leading-none', className)}
     >
       <Info className="size-3 fill-current stroke-bg-canvas block" />
-    </button>
+    </IconButton>
   );
 };
