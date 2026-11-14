@@ -28,7 +28,7 @@ export function SegmentedControl<T extends string>({
       role="radiogroup"
       className={cn(
         'border border-border-subtle flex flex-wrap items-center p-[3px] rounded-lg',
-        fullWidth ? 'w-full gap-1.5' : 'gap-2.5',
+        fullWidth ? 'w-full justify-between gap-y-2.5' : 'gap-2.5',
         className
       )}
     >
@@ -43,7 +43,6 @@ export function SegmentedControl<T extends string>({
             onClick={() => onChange(option.value)}
             className={cn(
               'flex items-center justify-center px-[5px] py-[2px] rounded-lg cursor-pointer transition-colors text-body-14 whitespace-nowrap',
-              fullWidth && 'flex-1',
               isSelected
                 ? 'bg-border-subtle font-bold text-text-secondary'
                 : 'font-normal text-text-muted hover:text-text-secondary'

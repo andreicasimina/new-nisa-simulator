@@ -92,7 +92,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
       onClose={onClose}
       title={withdrawal ? '売却イベントを編集' : '売却イベントを追加'}
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-1 pb-2">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 px-4">
         {/* Label input */}
         <TextInput
           label="ラベル"
@@ -138,7 +138,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         />
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-1.5 pt-1">
+        <div className="flex flex-col gap-1.5 -mt-0.5">
           <Button type="submit">
             {withdrawal ? '変更を保存する' : '売却イベントを追加する'}
           </Button>
