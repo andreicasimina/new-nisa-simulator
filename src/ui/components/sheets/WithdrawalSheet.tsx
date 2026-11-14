@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BottomSheet } from './BottomSheet';
 import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
 import { LabeledField } from '@/ui/components/common/LabeledField';
+import { TextInput } from '@/ui/components/common/TextInput';
 import { Button } from '@/ui/components/common/Button';
 import { SegmentedControl, SegmentedOption } from '@/ui/components/common/SegmentedControl';
 import { InputUnit } from '@/ui/types/units';
@@ -77,20 +78,12 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-1 pb-2">
         {/* Label input */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-caption-12 text-text-secondary">
-            ラベル
-          </label>
-          <div className="bg-bg-input flex items-center rounded-lg px-2 py-1 border border-transparent focus-within:border-text-primary transition-colors">
-            <input
-              type="text"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              placeholder="例: 住宅購入の頭金、学費など"
-              className="w-full bg-transparent text-body-16 text-text-primary focus:outline-none"
-            />
-          </div>
-        </div>
+        <TextInput
+          label="ラベル"
+          value={label}
+          onChange={(e) => setLabel(e.target.value)}
+          placeholder="例: 住宅購入の頭金、学費など"
+        />
 
         {/* Year of Withdrawal */}
         <LabeledField
