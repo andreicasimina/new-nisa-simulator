@@ -6,7 +6,7 @@
 - **Design (Figma):** [New NISA Simulator - Design](https://www.figma.com/design/ZEBPLk11SdBrFcdhFwg78e/New-NISA-Simulator---Design?node-id=18-103&m=dev)
 
 <p align="center">
-  <img src="docs/images/screenshot-main.png" alt="アプリケーション画面" width="600" />
+  <img src="docs/images/screenshot-main.png" alt="アプリケーション画面" width="300" />
 </p>
 
 ### 画面イメージ
