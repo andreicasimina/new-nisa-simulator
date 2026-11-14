@@ -48,6 +48,12 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 
   const isClosing = !isOpen;
 
+  const closeButton = (btnClass?: string) => (
+    <IconButton onClick={onClose} className={btnClass} aria-label="閉じる">
+      <X className="w-4 h-4" />
+    </IconButton>
+  );
+
   return (
     <div
       className={cn(
@@ -78,20 +84,18 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
           <div className="w-9 h-1 bg-bg-pressed rounded-full" />
         </div>
 
-        <div className="relative px-4 py-2 flex items-center justify-center shrink-0 min-h-[40px]">
-          {title && (
-            <h3 className="text-body-14-semibold text-text-primary">
-              {title}
-            </h3>
-          )}
-          <IconButton
-            onClick={onClose}
-            className="absolute right-4 top-2.5"
-            aria-label="閉じる"
-          >
-            <X className="w-4 h-4" />
-          </IconButton>
-        </div>
+        {title ? (
+          <div className="relative px-4 py-2 flex items-center justify-center shrink-0 min-h-[40px]">
+            <h3 className="text-body-14-semibold text-text-primary">{title}</h3>
+            {closeButton('absolute right-4 top-2.5')}
+          </div>
+        ) : (
+          // No title row: float the close button so it aligns with the first
+          // line of content (e.g. a custom header) instead of taking a row.
+          <div className="absolute right-4 top-[26px] z-10 flex h-5 items-center">
+            {closeButton()}
+          </div>
+        )}
         <div className="overflow-y-auto px-4 pb-6 pt-1 flex-1">
           {children}
         </div>
