@@ -6,6 +6,7 @@ import { TextInput } from '@/ui/components/common/TextInput';
 import { Button } from '@/ui/components/common/Button';
 import { SegmentedControl, SegmentedOption } from '@/ui/components/common/SegmentedControl';
 import { InputUnit } from '@/ui/types/units';
+import { DEFAULT_WITHDRAWAL } from '@/core/engine/constants';
 
 interface WithdrawalSheetProps {
   isOpen: boolean;
@@ -16,9 +17,6 @@ interface WithdrawalSheetProps {
   onUpdate: (id: string, withdrawal: Omit<MilestoneWithdrawal, 'id'>) => void;
   onDelete?: (id: string) => void;
 }
-
-const DEFAULT_WITHDRAWAL_YEAR = 10;
-const DEFAULT_WITHDRAWAL_AMOUNT = 1_000_000;
 
 interface WithdrawalDraft {
   label: string;
@@ -34,9 +32,10 @@ function toDraft(
   return {
     label: withdrawal?.label ?? '',
     yearIndex:
-      withdrawal?.yearIndex ?? Math.min(DEFAULT_WITHDRAWAL_YEAR, maxYears),
-    targetBucket: withdrawal?.targetBucket ?? 'growth',
-    amount: withdrawal?.amount ?? DEFAULT_WITHDRAWAL_AMOUNT,
+      withdrawal?.yearIndex ??
+      Math.min(DEFAULT_WITHDRAWAL.YEAR_INDEX, maxYears),
+    targetBucket: withdrawal?.targetBucket ?? DEFAULT_WITHDRAWAL.TARGET_BUCKET,
+    amount: withdrawal?.amount ?? DEFAULT_WITHDRAWAL.AMOUNT,
   };
 }
 

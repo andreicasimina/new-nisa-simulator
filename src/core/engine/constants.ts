@@ -22,3 +22,9 @@ export const DEFAULT_PLAN_STATE: NisaPlanState = {
   },
   withdrawals: [],
 };
+
+export const DEFAULT_WITHDRAWAL = {
+  YEAR_INDEX: 10,
+  AMOUNT: 1_000_000,
+  TARGET_BUCKET: 'growth',
+} as const;
