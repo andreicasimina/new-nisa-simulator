@@ -11,7 +11,7 @@ const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   secondary:
     'py-2.5 px-4 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-14-semibold rounded-2xl gap-2.5',
   'ghost-danger':
-    'py-2 px-4 text-red-600 hover:bg-red-50 text-caption-12 font-medium rounded-xl gap-1.5',
+    'py-2.5 px-4 text-text-muted hover:text-red-600 hover:bg-red-50 text-body-14-semibold rounded-2xl gap-1.5',
 };
 
 /**

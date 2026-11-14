@@ -4,8 +4,7 @@ import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
 import { LabeledField } from '@/ui/components/common/LabeledField';
 import { Button } from '@/ui/components/common/Button';
 import { InputUnit } from '@/ui/types/units';
-import { cn } from '@/ui/lib/utils';
-import { Trash2 } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 interface WithdrawalSheetProps {
   isOpen: boolean;
@@ -76,13 +75,13 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
       onClose={onClose}
       title={withdrawal ? '売却イベントを編集' : '売却イベントを追加'}
     >
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-1 pb-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 p-1 pb-2">
         {/* Label input */}
         <div className="flex flex-col gap-1 w-full">
           <label className="text-caption-12 text-text-secondary">
             ラベル
           </label>
-          <div className="bg-bg-input flex items-center rounded-lg px-2.5 py-1.5 border border-transparent focus-within:border-text-primary transition-colors">
+          <div className="bg-bg-input flex items-center rounded-lg px-2 py-1 border border-transparent focus-within:border-text-primary transition-colors">
             <input
               type="text"
               value={label}
@@ -102,26 +101,23 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         />
 
         {/* Bucket selector */}
-        <div className="flex flex-col gap-1.5 w-full">
+        <div className="flex flex-col gap-1 w-full">
           <label className="text-caption-12 text-text-secondary">
             売却元
           </label>
-          <div className="grid grid-cols-3 gap-1.5 p-1 bg-bg-input rounded-lg border border-border-subtle">
-            {BUCKET_OPTIONS.map((opt) => (
-              <button
-                key={opt.type}
-                type="button"
-                onClick={() => setTargetBucket(opt.type)}
-                className={cn(
-                  'py-1.5 text-center text-caption-12 font-medium rounded-md transition-all cursor-pointer truncate',
-                  targetBucket === opt.type
-                    ? 'bg-bg-surface text-text-primary shadow-xs font-semibold'
-                    : 'text-text-secondary hover:text-text-primary'
-                )}
-              >
-                {opt.label}
-              </button>
-            ))}
+          <div className="relative bg-bg-input flex items-center rounded-lg px-2 py-1 border border-transparent focus-within:border-text-primary transition-colors">
+            <select
+              value={targetBucket}
+              onChange={(e) => setTargetBucket(e.target.value as BucketType)}
+              className="w-full appearance-none bg-transparent text-body-16 text-text-primary pr-6 focus:outline-none cursor-pointer"
+            >
+              {BUCKET_OPTIONS.map((opt) => (
+                <option key={opt.type} value={opt.type}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-4 h-4 text-text-primary pointer-events-none absolute right-2.5" />
           </div>
         </div>
 
@@ -134,15 +130,14 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         />
 
         {/* Action Buttons */}
-        <div className="flex flex-col gap-2 pt-2">
+        <div className="flex flex-col gap-1.5 pt-1">
           <Button type="submit">
             {withdrawal ? '変更を保存する' : '売却イベントを追加する'}
           </Button>
 
           {withdrawal && onDelete && (
             <Button variant="ghost-danger" onClick={handleDelete}>
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>このイベントを削除する</span>
+              イベントを削除する
             </Button>
           )}
         </div>
