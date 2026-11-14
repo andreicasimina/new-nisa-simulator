@@ -5,17 +5,19 @@
 - **Demo:** [https://andreicasimina.github.io/new-nisa-simulator/](https://andreicasimina.github.io/new-nisa-simulator/)
 - **Design (Figma):** [New NISA Simulator - Design](https://www.figma.com/design/ZEBPLk11SdBrFcdhFwg78e/New-NISA-Simulator---Design?node-id=18-103&m=dev)
 
-![アプリケーション画面](docs/images/screenshot-main.png)
+<p align="center">
+  <img src="docs/images/screenshot-main.png" alt="アプリケーション画面" width="600" />
+</p>
 
 ### 画面イメージ
 
 | 入力画面 | 結果詳細画面 |
 | :---: | :---: |
-| ![入力画面](docs/images/screenshot-input.png) | ![結果詳細画面](docs/images/screenshot-result-detail.png) |
+| <img src="docs/images/screenshot-input.png" alt="入力画面" width="280" /> | <img src="docs/images/screenshot-result-detail.png" alt="結果詳細画面" width="280" /> |
 
 | 入力ヒント（想定利回り） | 入力ヒント（購入額） |
 | :---: | :---: |
-| ![入力ヒント：想定利回り](docs/images/screenshot-tip-return-rate.png) | ![入力ヒント：購入額](docs/images/screenshot-tip-purchase-amount.png) |
+| <img src="docs/images/screenshot-tip-return-rate.png" alt="入力ヒント：想定利回り" width="280" /> | <img src="docs/images/screenshot-tip-purchase-amount.png" alt="入力ヒント：購入額" width="280" /> |
 
 ## 概要
 
