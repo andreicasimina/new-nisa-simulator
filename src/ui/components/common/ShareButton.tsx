@@ -53,8 +53,8 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => 
     >
       {copied ? (
         <>
-          <Check className="size-6 text-emerald-600 shrink-0" />
-          <span className="text-emerald-700 font-semibold whitespace-nowrap">URLをコピーしました！</span>
+          <Check className="size-6 text-gain shrink-0" />
+          <span className="text-gain font-semibold whitespace-nowrap">URLをコピーしました！</span>
         </>
       ) : (
         <>

@@ -177,7 +177,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
                 {formatYen(lifetimeUsed)} / {formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}
               </span>
               {currentRecord.restoredPrincipalThisYear > 0 && (
-                <span className="text-caption-12 text-emerald-600 font-medium">
+                <span className="text-caption-12 text-gain font-medium">
                   ↳ 前年の売却により +{formatYen(currentRecord.restoredPrincipalThisYear)} 枠が復活
                 </span>
               )}
