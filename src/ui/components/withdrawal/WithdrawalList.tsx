@@ -35,7 +35,7 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
       {withdrawals.map((withdrawal) => (
         <div
           key={withdrawal.id}
-          className="bg-bg-surface border border-border-subtle flex gap-3 items-start justify-between p-2.5 rounded-lg w-full"
+          className="card flex gap-3 items-start justify-between p-2.5 w-full"
         >
           <div className="flex flex-col gap-2 flex-1 min-w-0">
             {/* Top row: Label & Year */}

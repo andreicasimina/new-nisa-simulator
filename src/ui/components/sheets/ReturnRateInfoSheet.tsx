@@ -56,10 +56,10 @@ export const ReturnRateInfoSheet: React.FC<ReturnRateInfoSheetProps> = ({
                 onClose();
               }}
               className={cn(
-                'text-left bg-bg-surface border p-2.5 rounded-lg flex flex-col gap-1.5 transition-colors cursor-pointer',
+                'text-left card p-2.5 flex flex-col gap-1.5 transition-colors cursor-pointer',
                 isSelected
                   ? 'border-text-primary'
-                  : 'border-border-subtle hover:border-gray-400'
+                  : 'hover:border-text-muted'
               )}
             >
               <div className="flex items-center justify-between gap-2 w-full">
@@ -82,7 +82,7 @@ export const ReturnRateInfoSheet: React.FC<ReturnRateInfoSheetProps> = ({
         <button
           type="button"
           onClick={onClose}
-          className="text-center bg-bg-surface border border-border-subtle hover:bg-bg-input p-2.5 rounded-lg text-body-14-semibold text-text-primary cursor-pointer transition-colors"
+          className="text-center card hover:bg-bg-input p-2.5 text-body-14-semibold text-text-primary cursor-pointer transition-colors"
         >
           自分で入力する
         </button>

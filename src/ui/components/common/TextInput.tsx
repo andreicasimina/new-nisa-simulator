@@ -29,7 +29,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         className={cn(
           'bg-bg-input flex items-center justify-between rounded-lg px-2 py-1 border transition-colors',
           error
-            ? 'border-red-500 bg-red-50/50'
+            ? 'border-danger bg-danger-surface/50'
             : 'border-transparent focus-within:border-text-primary'
         )}
       >
@@ -45,7 +45,7 @@ export const TextInput: React.FC<TextInputProps> = ({
         )}
       </div>
       {error && (
-        <span className="text-xs text-red-500 leading-tight">{error}</span>
+        <span className="text-caption-12 text-danger">{error}</span>
       )}
     </div>
   );

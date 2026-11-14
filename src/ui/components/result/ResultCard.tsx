@@ -110,7 +110,7 @@ export const ResultCard = React.forwardRef<HTMLDivElement, ResultCardProps>(
         <div
           ref={cardRef}
           className={cn(
-            'bg-bg-surface border border-border-subtle rounded-lg p-2.5 overflow-hidden',
+            'card p-2.5 overflow-hidden',
             'transition-[height,box-shadow] duration-300 ease-in-out',
             isSticky
               ? 'fixed top-3 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[361px] z-30 shadow-md'

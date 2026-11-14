@@ -75,7 +75,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
       >
         {/* Grab Handle */}
         <div className="flex justify-center pt-2 pb-1 shrink-0">
-          <div className="w-9 h-1 bg-gray-300 rounded-full" />
+          <div className="w-9 h-1 bg-bg-pressed rounded-full" />
         </div>
 
         <div className="relative px-4 py-2 flex items-center justify-center shrink-0 min-h-[40px]">

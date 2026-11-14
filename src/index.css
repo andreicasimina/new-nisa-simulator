@@ -11,6 +11,9 @@
   --color-gain: #00bc7d;
   --color-principal: #90a1b9;
   --color-withdrawal: #f59e0b;
+  --color-danger: #dc2626;
+  --color-danger-surface: #fef2f2;
+  --color-bg-pressed: #d1d5db;
   --animate-slide-up: slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1) forwards;
   --animate-slide-down: slide-down 0.22s cubic-bezier(0.32, 0.72, 0, 1) forwards;
   --animate-fade-in: fade-in 0.2s ease-out forwards;
@@ -60,6 +63,14 @@
     -webkit-tap-highlight-color: transparent;
     background-color: var(--color-bg-canvas);
     color: var(--color-text-primary);
+  }
+}
+
+@layer components {
+  .card {
+    background-color: var(--color-bg-surface);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.5rem;
   }
 }
 
