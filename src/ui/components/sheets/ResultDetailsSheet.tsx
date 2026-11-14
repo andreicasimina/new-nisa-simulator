@@ -50,7 +50,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
 
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-[10px]">
         {/* Custom Header with Prev / Year / Next */}
         <div className="flex items-center justify-center gap-1">
           <IconButton
@@ -75,10 +75,10 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
         </div>
 
         {/* Total Holdings Hero */}
+        <span className="text-caption-12 text-text-secondary text-center">
+          想定資産額（売却前）
+        </span>
         <div className="flex flex-col items-center gap-[9px] text-center">
-          <span className="text-caption-12 text-text-secondary">
-            想定資産額（売却前）
-          </span>
           <span className="text-display-28 text-text-primary">
             {formatYen(totalMarketValue)}
           </span>
@@ -87,6 +87,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
           </span>
         </div>
 
+        <div className="mt-[6px] flex flex-col gap-4">
         {/* Section 1: 保有額 */}
         <StatSection title="保有額">
           <StatCell
@@ -101,6 +102,8 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
           />
         </StatSection>
 
+        <div className="h-px w-full shrink-0 rounded-full bg-border-subtle" />
+
         {/* Section 2: 売却予定額 */}
         <StatSection title="売却予定額">
           <StatCell
@@ -113,28 +116,38 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
           />
         </StatSection>
 
+        <div className="h-px w-full shrink-0 rounded-full bg-border-subtle" />
+
         {/* Section 3: 投資枠 */}
-        <StatSection title="投資枠" columns={1}>
-          <StatCell
-            label="生涯投資枠（使用額）"
-            value={`${formatYen(lifetimeUsed)} / ${formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}`}
-            sub={
-              currentRecord.restoredPrincipalThisYear > 0
-                ? `↳ 前年の売却により +${formatYen(currentRecord.restoredPrincipalThisYear)} 枠が復活`
-                : undefined
-            }
-            subClassName="text-gain font-medium"
-          />
-          <StatCell
-            label="年間投資枠（使用額）"
-            value={`${formatYen(
-              currentRecord.annualContributions.tsumitate +
-                currentRecord.annualContributions.growth
-            )} / ${formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}`}
-            sub={`(積立: ${formatYen(currentRecord.annualContributions.tsumitate)} / ${formatYen(STATUTORY_LIMITS.ANNUAL_TSUMITATE)})`}
-            className="border-t border-border-subtle pt-2"
-          />
-        </StatSection>
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1">
+            <h4 className="text-body-14-semibold text-text-primary">年間投資枠（使用額）</h4>
+            <div className="flex flex-wrap gap-1">
+              <span className="text-body-16 text-text-primary font-medium">
+                {`${formatYen(
+                  currentRecord.annualContributions.tsumitate +
+                    currentRecord.annualContributions.growth
+                )} / ${formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}`}
+              </span>
+              <span className="text-body-14 text-text-secondary">
+                {`(積立使用額: ${formatYen(currentRecord.annualContributions.tsumitate)} / ${formatYen(STATUTORY_LIMITS.ANNUAL_TSUMITATE)})`}
+              </span>
+            </div>
+          </div>
+          <div className="h-px w-full shrink-0 rounded-full bg-border-subtle" />
+          <div className="flex flex-col gap-1">
+            <h4 className="text-body-14-semibold text-text-primary">生涯投資枠（使用額）</h4>
+            <span className="text-body-16 text-text-primary font-medium">
+              {`${formatYen(lifetimeUsed)} / ${formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}`}
+            </span>
+            {currentRecord.restoredPrincipalThisYear > 0 && (
+              <span className="text-body-14 text-gain">
+                {`↳ 前年の売却により +${formatYen(currentRecord.restoredPrincipalThisYear)} 枠が復活`}
+              </span>
+            )}
+          </div>
+        </div>
+        </div>
       </div>
     </BottomSheet>
   );
