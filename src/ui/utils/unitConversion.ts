@@ -1,4 +1,5 @@
 import { InputUnit } from '@/ui/types/units';
+import { YEN_PER_MAN } from './constants';
 
 /**
  * Converts a raw domain value (Yen, fractional rate like 0.05, or years)
@@ -8,7 +9,7 @@ export function unitToDisplay(value: number, unit: InputUnit): number | '' {
   if (value === 0) return '';
   switch (unit) {
     case InputUnit.YEN:
-      return value / 10_000;
+      return value / YEN_PER_MAN;
     case InputUnit.PERCENT:
       return +(value * 100).toFixed(2);
     case InputUnit.YEAR:
@@ -27,7 +28,7 @@ export function parseUnitInput(inputValue: string, unit: InputUnit): number {
 
   switch (unit) {
     case InputUnit.YEN:
-      return Math.round(parsed * 10_000);
+      return Math.round(parsed * YEN_PER_MAN);
     case InputUnit.PERCENT:
       return parsed / 100;
     case InputUnit.YEAR:

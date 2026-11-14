@@ -13,6 +13,8 @@ import { WithdrawalSheet } from '@/ui/components/sheets/WithdrawalSheet';
 import { ReturnRateInfoSheet } from '@/ui/components/sheets/ReturnRateInfoSheet';
 import { TipListSheet, TipItem } from '@/ui/components/sheets/TipListSheet';
 import { MilestoneWithdrawal } from '@/core/types/nisa';
+import { STATUTORY_LIMITS } from '@/core/engine/constants';
+import { formatYen } from '@/ui/utils/formatters';
 
 const YEARS_TIPS: readonly TipItem[] = [
   {
@@ -46,7 +48,7 @@ const PURCHASE_SETTINGS_TIPS: readonly TipItem[] = [
   {
     title: '年間投資枠と生涯非課税枠',
     description:
-      '1年に投資できるのは最大360万円、一生涯では最大1,800万円までです。1,800万円の枠は、つみたて枠だけでも使い切ることができます。',
+      `1年に投資できるのは最大${formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}、一生涯では最大${formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}までです。${formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}の枠は、つみたて枠だけでも使い切ることができます。`,
   },
   {
     title: '売却すると非課税枠が復活する',

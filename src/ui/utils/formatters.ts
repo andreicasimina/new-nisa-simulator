@@ -1,6 +1,8 @@
+import { YEN_PER_MAN } from './constants';
+
 export function formatYen(yen: number): string {
   if (yen === 0) return '0万円';
-  const man = yen / 10_000;
+  const man = yen / YEN_PER_MAN;
   if (Number.isInteger(man)) {
     return `${man.toLocaleString()}万円`;
   }

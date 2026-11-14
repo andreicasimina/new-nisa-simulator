@@ -1,6 +1,7 @@
 import React from 'react';
-import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
+import { MilestoneWithdrawal } from '@/core/types/nisa';
 import { formatYen } from '@/ui/utils/formatters';
+import { BUCKET_LABELS } from '@/ui/utils/constants';
 import { cn } from '@/ui/lib/utils';
 
 interface WithdrawalListProps {
@@ -8,12 +9,6 @@ interface WithdrawalListProps {
   onEdit: (withdrawal: MilestoneWithdrawal) => void;
   className?: string;
 }
-
-const BUCKET_LABEL_MAP: Record<BucketType, string> = {
-  tsumitate: 'つみたて投資枠',
-  growth: '成長投資枠',
-  proportional: '按分（両方）',
-};
 
 export const WithdrawalList: React.FC<WithdrawalListProps> = ({
   withdrawals,
@@ -65,7 +60,7 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
                   売却元
                 </span>
                 <span className="text-body-16 text-text-primary">
-                  {BUCKET_LABEL_MAP[withdrawal.targetBucket]}
+                  {BUCKET_LABELS[withdrawal.targetBucket]}
                 </span>
               </div>
               <div className="flex flex-col gap-0.5 flex-1 min-w-0 text-right">

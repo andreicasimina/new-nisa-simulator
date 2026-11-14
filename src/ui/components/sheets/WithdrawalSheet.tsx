@@ -4,9 +4,10 @@ import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
 import { LabeledField } from '@/ui/components/common/LabeledField';
 import { TextInput } from '@/ui/components/common/TextInput';
 import { Button } from '@/ui/components/common/Button';
-import { SegmentedControl, SegmentedOption } from '@/ui/components/common/SegmentedControl';
+import { SegmentedControl } from '@/ui/components/common/SegmentedControl';
 import { InputUnit } from '@/ui/types/units';
 import { DEFAULT_WITHDRAWAL } from '@/core/engine/constants';
+import { BUCKET_OPTIONS } from '@/ui/utils/constants';
 
 interface WithdrawalSheetProps {
   isOpen: boolean;
@@ -38,12 +39,6 @@ function toDraft(
     amount: withdrawal?.amount ?? DEFAULT_WITHDRAWAL.AMOUNT,
   };
 }
-
-const BUCKET_OPTIONS: readonly SegmentedOption<BucketType>[] = [
-  { value: 'growth', label: '成長投資枠' },
-  { value: 'tsumitate', label: 'つみたて投資枠' },
-  { value: 'proportional', label: '按分（両方）' },
-];
 
 export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
   isOpen,
