@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 import { Backdrop } from '@/ui/components/common/Backdrop';
@@ -11,6 +11,8 @@ interface BottomSheetProps {
   children: React.ReactNode;
 }
 
+const EXIT_DURATION_MS = 220;
+
 export const BottomSheet: React.FC<BottomSheetProps> = ({
   isOpen,
   onClose,
@@ -18,27 +20,55 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
   className,
   children,
 }) => {
+  const [shouldRender, setShouldRender] = useState(isOpen);
+
   useEffect(() => {
     if (isOpen) {
+      setShouldRender(true);
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+      return () => {
+        document.body.style.overflow = '';
+      };
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen]);
 
-  if (!isOpen) return null;
+    document.body.style.overflow = '';
+    if (!shouldRender) return;
+
+    const timer = window.setTimeout(() => {
+      setShouldRender(false);
+    }, EXIT_DURATION_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [isOpen, shouldRender]);
+
+  if (!shouldRender) return null;
+
+  const isClosing = !isOpen;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center sm:items-center">
-      <Backdrop onClick={onClose} />
+    <div
+      className={cn(
+        'fixed inset-0 z-50 flex items-end justify-center sm:items-center',
+        isClosing && 'pointer-events-none'
+      )}
+    >
+      <Backdrop
+        onClick={onClose}
+        className={isClosing ? 'animate-fade-out' : 'animate-fade-in'}
+      />
       <div
         role="dialog"
         aria-modal="true"
+        onAnimationEnd={(e) => {
+          if (isClosing && e.target === e.currentTarget) {
+            setShouldRender(false);
+          }
+        }}
         className={cn(
-          'relative z-10 w-full max-w-[393px] bg-white rounded-t-2xl sm:rounded-b-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden animate-slide-up',
+          'relative z-10 w-full max-w-[393px] bg-white rounded-t-2xl sm:rounded-b-2xl shadow-xl flex flex-col max-h-[90vh] overflow-hidden',
+          isClosing ? 'animate-slide-down' : 'animate-slide-up',
           className
         )}
       >
