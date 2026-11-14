@@ -1,8 +1,7 @@
 import React from 'react';
 import { LabeledField } from '@/ui/components/common/LabeledField';
-import { InfoButton } from '@/ui/components/common/InfoButton';
+import { FormSection } from '@/ui/components/common/FormSection';
 import { InputUnit } from '@/ui/types/units';
-import { cn } from '@/ui/lib/utils';
 
 interface PurchaseSettingsProps {
   tsumitateMonthly: number;
@@ -26,14 +25,12 @@ export const PurchaseSettings: React.FC<PurchaseSettingsProps> = ({
   className,
 }) => {
   return (
-    <div className={cn('flex flex-col gap-3 w-full', className)}>
-      <div className="flex items-center gap-1">
-        <h3 className="text-body-14-semibold text-text-primary">購入設定</h3>
-        {onOpenPurchaseInfo && (
-          <InfoButton onClick={onOpenPurchaseInfo} ariaLabel="購入設定の説明" />
-        )}
-      </div>
-
+    <FormSection
+      title="購入設定"
+      onInfo={onOpenPurchaseInfo}
+      infoAriaLabel="購入設定の説明"
+      className={className}
+    >
       {/* Monthly Row */}
       <div className="grid grid-cols-2 gap-3 w-full">
         <LabeledField
@@ -57,6 +54,6 @@ export const PurchaseSettings: React.FC<PurchaseSettingsProps> = ({
         onChange={onGrowthAnnualLumpSumChange}
         unit={InputUnit.YEN}
       />
-    </div>
+    </FormSection>
   );
 };

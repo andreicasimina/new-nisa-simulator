@@ -1,7 +1,7 @@
 import React from 'react';
 import { LabeledField } from '@/ui/components/common/LabeledField';
+import { FormSection } from '@/ui/components/common/FormSection';
 import { InputUnit } from '@/ui/types/units';
-import { cn } from '@/ui/lib/utils';
 
 interface SimulationSettingsProps {
   expectedReturnRate: number;
@@ -23,11 +23,7 @@ export const SimulationSettings: React.FC<SimulationSettingsProps> = ({
   className,
 }) => {
   return (
-    <div className={cn('flex flex-col gap-3 w-full', className)}>
-      <h3 className="text-body-14-semibold text-text-primary">
-        シミュレーション基本設定
-      </h3>
-
+    <FormSection title="シミュレーション基本設定" className={className}>
       <div className="grid grid-cols-2 gap-3 w-full">
         <LabeledField
           label="想定利回り"
@@ -44,6 +40,6 @@ export const SimulationSettings: React.FC<SimulationSettingsProps> = ({
           onInfo={onOpenYearsInfo}
         />
       </div>
-    </div>
+    </FormSection>
   );
 };

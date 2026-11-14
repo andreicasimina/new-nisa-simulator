@@ -1,8 +1,8 @@
 import React from 'react';
 import { Holdings } from '@/core/types/nisa';
 import { LabeledField } from '@/ui/components/common/LabeledField';
+import { FormSection } from '@/ui/components/common/FormSection';
 import { InputUnit } from '@/ui/types/units';
-import { cn } from '@/ui/lib/utils';
 
 interface InitialHoldingsSectionProps {
   holdings: Holdings;
@@ -44,11 +44,7 @@ export const InitialHoldingsSection: React.FC<InitialHoldingsSectionProps> = ({
   };
 
   return (
-    <div className={cn('flex flex-col gap-3 w-full', className)}>
-      <h3 className="text-body-14-semibold text-text-primary">
-        初期資産
-      </h3>
-
+    <FormSection title="初期資産" className={className}>
       {/* Principal Row */}
       <div className="grid grid-cols-2 gap-3 w-full">
         <LabeledField
@@ -80,6 +76,6 @@ export const InitialHoldingsSection: React.FC<InitialHoldingsSectionProps> = ({
           unit={InputUnit.YEN}
         />
       </div>
-    </div>
+    </FormSection>
   );
 };
