@@ -9,6 +9,7 @@ import { WithdrawalList } from '@/ui/components/withdrawal/WithdrawalList';
 import { AddWithdrawalButton } from '@/ui/components/withdrawal/AddWithdrawalButton';
 import { NisaPlanState } from '@/core/types/state';
 import { MilestoneWithdrawal, Holdings } from '@/core/types/nisa';
+import { sumHoldings } from '@/ui/utils/holdings';
 import { cn } from '@/ui/lib/utils';
 
 interface InputCardProps {
@@ -33,11 +34,9 @@ export const InputCard: React.FC<InputCardProps> = ({
   className,
 }) => {
   // Determine initial account mode based on whether holdings exist
-  const hasExistingHoldings =
-    plan.initialHoldings.tsumitate.principal > 0 ||
-    plan.initialHoldings.tsumitate.marketValue > 0 ||
-    plan.initialHoldings.growth.principal > 0 ||
-    plan.initialHoldings.growth.marketValue > 0;
+  const { marketValue: initialMarketValue, principal: initialPrincipal } =
+    sumHoldings(plan.initialHoldings);
+  const hasExistingHoldings = initialMarketValue > 0 || initialPrincipal > 0;
 
   const [accountMode, setAccountMode] = useState<AccountMode>(
     hasExistingHoldings ? 'existing' : 'fresh'
@@ -67,7 +66,7 @@ export const InputCard: React.FC<InputCardProps> = ({
   return (
     <div
       className={cn(
-        'w-full max-w-[361px] bg-bg-surface border border-border-subtle rounded-lg p-4 flex flex-col gap-3',
+        'w-full max-w-[361px] card p-4 flex flex-col gap-3',
         className
       )}
     >
@@ -89,32 +88,16 @@ export const InputCard: React.FC<InputCardProps> = ({
 
       {/* Basic Simulation Settings */}
       <SimulationSettings
-        expectedReturnRate={plan.expectedReturnRate}
-        horizonYears={plan.horizonYears}
-        onReturnRateChange={(expectedReturnRate) =>
-          onPlanUpdate({ expectedReturnRate })
-        }
-        onHorizonYearsChange={(horizonYears) =>
-          onPlanUpdate({ horizonYears })
-        }
+        plan={plan}
+        onPlanUpdate={onPlanUpdate}
         onOpenReturnInfo={onOpenReturnInfo}
         onOpenYearsInfo={onOpenYearsInfo}
       />
 
       {/* Purchase Settings */}
       <PurchaseSettings
-        tsumitateMonthly={plan.tsumitateMonthly}
-        growthMonthly={plan.growthMonthly}
-        growthAnnualLumpSum={plan.growthAnnualLumpSum}
-        onTsumitateMonthlyChange={(tsumitateMonthly) =>
-          onPlanUpdate({ tsumitateMonthly })
-        }
-        onGrowthMonthlyChange={(growthMonthly) =>
-          onPlanUpdate({ growthMonthly })
-        }
-        onGrowthAnnualLumpSumChange={(growthAnnualLumpSum) =>
-          onPlanUpdate({ growthAnnualLumpSum })
-        }
+        plan={plan}
+        onPlanUpdate={onPlanUpdate}
         onOpenPurchaseInfo={onOpenPurchaseInfo}
       />
 

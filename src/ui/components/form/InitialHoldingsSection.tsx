@@ -7,75 +7,56 @@ import { InputUnit } from '@/ui/types/units';
 interface InitialHoldingsSectionProps {
   holdings: Holdings;
   onChange: (holdings: Holdings) => void;
-  className?: string;
 }
+
+type HoldingBucket = keyof Holdings;
+type HoldingField = keyof Holdings['tsumitate'];
+
+const HOLDING_ROWS: readonly (readonly {
+  bucket: HoldingBucket;
+  field: HoldingField;
+  label: string;
+}[])[] = [
+  [
+    { bucket: 'tsumitate', field: 'principal', label: '積立 (元本)' },
+    { bucket: 'growth', field: 'principal', label: '成長 (元本)' },
+  ],
+  [
+    { bucket: 'tsumitate', field: 'marketValue', label: '積立 (評価額)' },
+    { bucket: 'growth', field: 'marketValue', label: '成長 (評価額)' },
+  ],
+];
 
 export const InitialHoldingsSection: React.FC<InitialHoldingsSectionProps> = ({
   holdings,
   onChange,
-  className,
 }) => {
-  const handleTsumitatePrincipalChange = (val: number) => {
+  const updateHolding = (
+    bucket: HoldingBucket,
+    field: HoldingField,
+    val: number
+  ) => {
     onChange({
       ...holdings,
-      tsumitate: { ...holdings.tsumitate, principal: val },
-    });
-  };
-
-  const handleTsumitateMarketValueChange = (val: number) => {
-    onChange({
-      ...holdings,
-      tsumitate: { ...holdings.tsumitate, marketValue: val },
-    });
-  };
-
-  const handleGrowthPrincipalChange = (val: number) => {
-    onChange({
-      ...holdings,
-      growth: { ...holdings.growth, principal: val },
-    });
-  };
-
-  const handleGrowthMarketValueChange = (val: number) => {
-    onChange({
-      ...holdings,
-      growth: { ...holdings.growth, marketValue: val },
+      [bucket]: { ...holdings[bucket], [field]: val },
     });
   };
 
   return (
-    <FormSection title="初期資産" className={className}>
-      {/* Principal Row */}
-      <div className="grid grid-cols-2 gap-3 w-full">
-        <LabeledField
-          label="積立 (元本)"
-          value={holdings.tsumitate.principal}
-          onChange={handleTsumitatePrincipalChange}
-          unit={InputUnit.YEN}
-        />
-        <LabeledField
-          label="成長 (元本)"
-          value={holdings.growth.principal}
-          onChange={handleGrowthPrincipalChange}
-          unit={InputUnit.YEN}
-        />
-      </div>
-
-      {/* Market Value Row */}
-      <div className="grid grid-cols-2 gap-3 w-full">
-        <LabeledField
-          label="積立 (評価額)"
-          value={holdings.tsumitate.marketValue}
-          onChange={handleTsumitateMarketValueChange}
-          unit={InputUnit.YEN}
-        />
-        <LabeledField
-          label="成長 (評価額)"
-          value={holdings.growth.marketValue}
-          onChange={handleGrowthMarketValueChange}
-          unit={InputUnit.YEN}
-        />
-      </div>
+    <FormSection title="初期資産">
+      {HOLDING_ROWS.map((row, rowIndex) => (
+        <div key={rowIndex} className="grid grid-cols-2 gap-3 w-full">
+          {row.map(({ bucket, field, label }) => (
+            <LabeledField
+              key={`${bucket}-${field}`}
+              label={label}
+              value={holdings[bucket][field]}
+              onChange={(val) => updateHolding(bucket, field, val)}
+              unit={InputUnit.YEN}
+            />
+          ))}
+        </div>
+      ))}
     </FormSection>
   );
 };
