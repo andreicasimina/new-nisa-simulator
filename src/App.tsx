@@ -11,9 +11,49 @@ import { Footer } from '@/ui/components/Footer';
 import { ResultDetailsSheet } from '@/ui/components/sheets/ResultDetailsSheet';
 import { WithdrawalSheet } from '@/ui/components/sheets/WithdrawalSheet';
 import { ReturnRateInfoSheet } from '@/ui/components/sheets/ReturnRateInfoSheet';
-import { YearsInfoSheet } from '@/ui/components/sheets/YearsInfoSheet';
-import { PurchaseSettingsInfoSheet } from '@/ui/components/sheets/PurchaseSettingsInfoSheet';
+import { TipListSheet, TipItem } from '@/ui/components/sheets/TipListSheet';
 import { MilestoneWithdrawal } from '@/core/types/nisa';
+
+const YEARS_TIPS: readonly TipItem[] = [
+  {
+    title: '退職時期から逆算する',
+    description:
+      '「退職予定の年齢（60〜65歳など）− 現在の年齢」を基準にするのが一般的です。例えば30歳で65歳定年を目指す場合は35年となります。',
+  },
+  {
+    title: 'ライフイベントから決める',
+    description:
+      '教育資金や住宅購入の頭金など中期目標なら「10〜15年」、老後資金や本格的な資産形成が目的なら「20〜30年以上」が目安です。',
+  },
+  {
+    title: '長く続けるほど有利になる',
+    description:
+      '投資は期間が長くなるほど、一時的な値下がりのリスクが減り、お金が効率よく増えやすくなります。迷ったら「できるだけ長い年数」で試算してみましょう。',
+  },
+];
+
+const PURCHASE_SETTINGS_TIPS: readonly TipItem[] = [
+  {
+    title: '余剰資金で無理なく設定する',
+    description:
+      'どんなに手堅い投資でも一時的な値下がりは避けられません。生活費や数年以内に使うお金は銀行に残し、当面使わない「余ったお金」で設定しましょう。',
+  },
+  {
+    title: 'つみたて枠と成長枠の違い',
+    description:
+      '「つみたて枠」は安全基準をクリアした商品の毎月積立用、「成長枠」は一括購入や追加購入もできる枠です。迷ったらまずは「つみたて枠」だけで十分です。',
+  },
+  {
+    title: '年間投資枠と生涯非課税枠',
+    description:
+      '1年に投資できるのは最大360万円、一生涯では最大1,800万円までです。1,800万円の枠は、つみたて枠だけでも使い切ることができます。',
+  },
+  {
+    title: '売却すると非課税枠が復活する',
+    description:
+      '途中で売却しても、その「買ったときの金額」分の枠は翌年に復活します。急な出費でお金が必要になったら、いつでも解約して引き出せます。',
+  },
+];
 
 export const App: React.FC = () => {
   const {
@@ -163,15 +203,19 @@ export const App: React.FC = () => {
       />
 
       {/* Years of Operation Educational Bottom Sheet */}
-      <YearsInfoSheet
+      <TipListSheet
         isOpen={isYearsInfoOpen}
         onClose={() => setIsYearsInfoOpen(false)}
+        title="運用年数の目安"
+        tips={YEARS_TIPS}
       />
 
       {/* Purchase Settings Educational Bottom Sheet */}
-      <PurchaseSettingsInfoSheet
+      <TipListSheet
         isOpen={isPurchaseInfoOpen}
         onClose={() => setIsPurchaseInfoOpen(false)}
+        title="購入設定の目安とルール"
+        tips={PURCHASE_SETTINGS_TIPS}
       />
     </div>
   );
