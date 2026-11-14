@@ -12,8 +12,32 @@ interface WithdrawalSheetProps {
   onClose: () => void;
   withdrawal?: MilestoneWithdrawal | null; // If null, we are adding new
   maxYears: number;
-  onSave: (withdrawal: Omit<MilestoneWithdrawal, 'id'>, id?: string) => void;
+  onAdd: (withdrawal: Omit<MilestoneWithdrawal, 'id'>) => void;
+  onUpdate: (id: string, withdrawal: Omit<MilestoneWithdrawal, 'id'>) => void;
   onDelete?: (id: string) => void;
+}
+
+const DEFAULT_WITHDRAWAL_YEAR = 10;
+const DEFAULT_WITHDRAWAL_AMOUNT = 1_000_000;
+
+interface WithdrawalDraft {
+  label: string;
+  yearIndex: number;
+  targetBucket: BucketType;
+  amount: number;
+}
+
+function toDraft(
+  withdrawal: MilestoneWithdrawal | null | undefined,
+  maxYears: number
+): WithdrawalDraft {
+  return {
+    label: withdrawal?.label ?? '',
+    yearIndex:
+      withdrawal?.yearIndex ?? Math.min(DEFAULT_WITHDRAWAL_YEAR, maxYears),
+    targetBucket: withdrawal?.targetBucket ?? 'growth',
+    amount: withdrawal?.amount ?? DEFAULT_WITHDRAWAL_AMOUNT,
+  };
 }
 
 const BUCKET_OPTIONS: readonly SegmentedOption<BucketType>[] = [
@@ -27,39 +51,37 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
   onClose,
   withdrawal,
   maxYears,
-  onSave,
+  onAdd,
+  onUpdate,
   onDelete,
 }) => {
-  const [label, setLabel] = useState(withdrawal?.label ?? '');
-  const [yearIndex, setYearIndex] = useState(withdrawal?.yearIndex ?? Math.min(10, maxYears));
-  const [targetBucket, setTargetBucket] = useState<BucketType>(
-    withdrawal?.targetBucket ?? 'growth'
+  const [draft, setDraft] = useState<WithdrawalDraft>(() =>
+    toDraft(withdrawal, maxYears)
   );
-  const [amount, setAmount] = useState(withdrawal?.amount ?? 1_000_000);
 
-  // Sync state when open or withdrawal changes
+  // Sync draft when opening or switching between add/edit targets
   useEffect(() => {
     if (isOpen) {
-      setLabel(withdrawal?.label ?? '');
-      setYearIndex(withdrawal?.yearIndex ?? Math.min(10, maxYears));
-      setTargetBucket(withdrawal?.targetBucket ?? 'growth');
-      setAmount(withdrawal?.amount ?? 1_000_000);
+      setDraft(toDraft(withdrawal, maxYears));
     }
   }, [isOpen, withdrawal, maxYears]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (amount <= 0) return;
+    if (draft.amount <= 0) return;
 
-    onSave(
-      {
-        label: label.trim() || '売却',
-        yearIndex: Math.min(Math.max(1, yearIndex), maxYears),
-        targetBucket,
-        amount,
-      },
-      withdrawal?.id
-    );
+    const payload: Omit<MilestoneWithdrawal, 'id'> = {
+      label: draft.label.trim() || '売却',
+      yearIndex: Math.min(Math.max(1, draft.yearIndex), maxYears),
+      targetBucket: draft.targetBucket,
+      amount: draft.amount,
+    };
+
+    if (withdrawal?.id) {
+      onUpdate(withdrawal.id, payload);
+    } else {
+      onAdd(payload);
+    }
     onClose();
   };
 
@@ -80,16 +102,21 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         {/* Label input */}
         <TextInput
           label="ラベル"
-          value={label}
-          onChange={(e) => setLabel(e.target.value)}
+          value={draft.label}
+          onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))}
           placeholder="例: 住宅購入の頭金、学費など"
         />
 
         {/* Year of Withdrawal */}
         <LabeledField
-          label={`売却年（1 〜 ${maxYears} 年目）`}
-          value={yearIndex}
-          onChange={(val) => setYearIndex(Math.min(Math.max(1, val), maxYears))}
+          label="売却年"
+          value={draft.yearIndex}
+          onChange={(val) =>
+            setDraft((d) => ({
+              ...d,
+              yearIndex: Math.min(Math.max(1, val), maxYears),
+            }))
+          }
           unit={InputUnit.YEAR}
         />
 
@@ -100,8 +127,10 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           </label>
           <SegmentedControl
             options={BUCKET_OPTIONS}
-            value={targetBucket}
-            onChange={setTargetBucket}
+            value={draft.targetBucket}
+            onChange={(targetBucket) =>
+              setDraft((d) => ({ ...d, targetBucket }))
+            }
             fullWidth
           />
         </div>
@@ -109,8 +138,8 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         {/* Withdrawal Amount */}
         <LabeledField
           label="出金額"
-          value={amount}
-          onChange={(val) => setAmount(val)}
+          value={draft.amount}
+          onChange={(amount) => setDraft((d) => ({ ...d, amount }))}
           unit={InputUnit.YEN}
         />
 

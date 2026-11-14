@@ -55,6 +55,14 @@ const PURCHASE_SETTINGS_TIPS: readonly TipItem[] = [
   },
 ];
 
+type ActiveSheet =
+  | { type: 'details'; yearIndex: number }
+  | { type: 'withdrawal'; withdrawal: MilestoneWithdrawal | null }
+  | { type: 'returnInfo' }
+  | { type: 'yearsInfo' }
+  | { type: 'purchaseInfo' }
+  | null;
+
 export const App: React.FC = () => {
   const {
     plan,
@@ -70,13 +78,8 @@ export const App: React.FC = () => {
   const [cardHeights, setCardHeights] = useState<ResultCardHeights>(DEFAULT_CARD_HEIGHTS);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  // Sheet states
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  const [isWithdrawalSheetOpen, setIsWithdrawalSheetOpen] = useState(false);
-  const [editingWithdrawal, setEditingWithdrawal] = useState<MilestoneWithdrawal | null>(null);
-  const [isReturnInfoOpen, setIsReturnInfoOpen] = useState(false);
-  const [isYearsInfoOpen, setIsYearsInfoOpen] = useState(false);
-  const [isPurchaseInfoOpen, setIsPurchaseInfoOpen] = useState(false);
+  const [activeSheet, setActiveSheet] = useState<ActiveSheet>(null);
+  const closeSheet = () => setActiveSheet(null);
 
   // Monitor scroll position: collapse first, then turn sticky when scrolling further down
   useEffect(() => {
@@ -110,28 +113,10 @@ export const App: React.FC = () => {
   }, [cardHeights]);
 
   const handleOpenDetails = (yearIndex?: number) => {
-    setSelectedYear(yearIndex ?? plan.horizonYears);
-  };
-
-  const handleAddWithdrawalClick = () => {
-    setEditingWithdrawal(null);
-    setIsWithdrawalSheetOpen(true);
-  };
-
-  const handleEditWithdrawalClick = (w: MilestoneWithdrawal) => {
-    setEditingWithdrawal(w);
-    setIsWithdrawalSheetOpen(true);
-  };
-
-  const handleSaveWithdrawal = (
-    data: Omit<MilestoneWithdrawal, 'id'>,
-    id?: string
-  ) => {
-    if (id) {
-      updateWithdrawal(id, data);
-    } else {
-      addWithdrawal(data);
-    }
+    setActiveSheet({
+      type: 'details',
+      yearIndex: yearIndex ?? plan.horizonYears,
+    });
   };
 
   return (
@@ -159,11 +144,15 @@ export const App: React.FC = () => {
         <InputCard
           plan={plan}
           onPlanUpdate={updatePlan}
-          onAddWithdrawalClick={handleAddWithdrawalClick}
-          onEditWithdrawalClick={handleEditWithdrawalClick}
-          onOpenReturnInfo={() => setIsReturnInfoOpen(true)}
-          onOpenYearsInfo={() => setIsYearsInfoOpen(true)}
-          onOpenPurchaseInfo={() => setIsPurchaseInfoOpen(true)}
+          onAddWithdrawalClick={() =>
+            setActiveSheet({ type: 'withdrawal', withdrawal: null })
+          }
+          onEditWithdrawalClick={(withdrawal) =>
+            setActiveSheet({ type: 'withdrawal', withdrawal })
+          }
+          onOpenReturnInfo={() => setActiveSheet({ type: 'returnInfo' })}
+          onOpenYearsInfo={() => setActiveSheet({ type: 'yearsInfo' })}
+          onOpenPurchaseInfo={() => setActiveSheet({ type: 'purchaseInfo' })}
         />
       </div>
 
@@ -172,46 +161,52 @@ export const App: React.FC = () => {
 
       {/* Year Detail Bottom Sheet with Carousel/Stepper Navigation */}
       <ResultDetailsSheet
-        isOpen={selectedYear !== null}
-        onClose={() => setSelectedYear(null)}
-        yearIndex={selectedYear ?? plan.horizonYears}
-        onYearChange={(newYear) => setSelectedYear(newYear)}
+        isOpen={activeSheet?.type === 'details'}
+        onClose={closeSheet}
+        yearIndex={
+          activeSheet?.type === 'details'
+            ? activeSheet.yearIndex
+            : plan.horizonYears
+        }
+        onYearChange={(yearIndex) =>
+          setActiveSheet({ type: 'details', yearIndex })
+        }
         yearlyRecords={result.yearly}
       />
 
       {/* Withdrawal Add / Edit Bottom Sheet */}
       <WithdrawalSheet
-        isOpen={isWithdrawalSheetOpen}
-        onClose={() => {
-          setIsWithdrawalSheetOpen(false);
-          setEditingWithdrawal(null);
-        }}
-        withdrawal={editingWithdrawal}
+        isOpen={activeSheet?.type === 'withdrawal'}
+        onClose={closeSheet}
+        withdrawal={
+          activeSheet?.type === 'withdrawal' ? activeSheet.withdrawal : null
+        }
         maxYears={plan.horizonYears}
-        onSave={handleSaveWithdrawal}
+        onAdd={addWithdrawal}
+        onUpdate={updateWithdrawal}
         onDelete={removeWithdrawal}
       />
 
       {/* Expected Return Rate Educational Bottom Sheet */}
       <ReturnRateInfoSheet
-        isOpen={isReturnInfoOpen}
-        onClose={() => setIsReturnInfoOpen(false)}
+        isOpen={activeSheet?.type === 'returnInfo'}
+        onClose={closeSheet}
         onSelectRate={(rate) => updatePlan({ expectedReturnRate: rate })}
         currentRate={plan.expectedReturnRate}
       />
 
       {/* Years of Operation Educational Bottom Sheet */}
       <TipListSheet
-        isOpen={isYearsInfoOpen}
-        onClose={() => setIsYearsInfoOpen(false)}
+        isOpen={activeSheet?.type === 'yearsInfo'}
+        onClose={closeSheet}
         title="運用年数の目安"
         tips={YEARS_TIPS}
       />
 
       {/* Purchase Settings Educational Bottom Sheet */}
       <TipListSheet
-        isOpen={isPurchaseInfoOpen}
-        onClose={() => setIsPurchaseInfoOpen(false)}
+        isOpen={activeSheet?.type === 'purchaseInfo'}
+        onClose={closeSheet}
         title="購入設定の目安とルール"
         tips={PURCHASE_SETTINGS_TIPS}
       />
