@@ -3,6 +3,7 @@ import { Share2, Check } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 import { createShareUrl } from '@/core/url/urlUtils';
 import { NisaPlanState } from '@/core/types/state';
+import { Button } from './Button';
 
 interface ShareButtonProps {
   plan: NisaPlanState;
@@ -43,13 +44,9 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => 
   };
 
   return (
-    <button
-      type="button"
+    <Button
       onClick={handleShare}
-      className={cn(
-        'w-full p-2.5 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-14-semibold rounded-2xl flex items-center justify-center gap-2.5 transition-colors cursor-pointer active:scale-[0.99]',
-        className
-      )}
+      className={cn('px-2.5', className)}
     >
       {copied ? (
         <>
@@ -62,6 +59,6 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => 
           <span className="whitespace-nowrap">結果を保存・シェア</span>
         </>
       )}
-    </button>
+    </Button>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BottomSheet } from './BottomSheet';
 import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
 import { InputField } from '@/ui/components/common/InputField';
+import { Button } from '@/ui/components/common/Button';
 import { InputUnit } from '@/ui/types/units';
 import { cn } from '@/ui/lib/utils';
 import { Trash2 } from 'lucide-react';
@@ -142,22 +143,15 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
 
         {/* Action Buttons */}
         <div className="flex flex-col gap-2 pt-2">
-          <button
-            type="submit"
-            className="w-full py-2.5 px-4 bg-border-subtle hover:bg-gray-300 text-text-primary text-body-14-semibold rounded-2xl transition-colors cursor-pointer text-center"
-          >
+          <Button type="submit">
             {withdrawal ? '変更を保存する' : '売却イベントを追加する'}
-          </button>
+          </Button>
 
           {withdrawal && onDelete && (
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="w-full py-2 px-4 text-red-600 hover:bg-red-50 text-caption-12 font-medium rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
-            >
+            <Button variant="ghost-danger" onClick={handleDelete}>
               <Trash2 className="w-3.5 h-3.5" />
               <span>このイベントを削除する</span>
-            </button>
+            </Button>
           )}
         </div>
       </form>
