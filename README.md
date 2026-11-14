@@ -7,6 +7,16 @@
 
 ![アプリケーション画面](docs/images/screenshot-main.png)
 
+### 画面イメージ
+
+| 入力画面 | 結果詳細画面 |
+| :---: | :---: |
+| ![入力画面](docs/images/screenshot-input.png) | ![結果詳細画面](docs/images/screenshot-result-detail.png) |
+
+| 入力ヒント（想定利回り） | 入力ヒント（購入額） |
+| :---: | :---: |
+| ![入力ヒント：想定利回り](docs/images/screenshot-tip-return-rate.png) | ![入力ヒント：購入額](docs/images/screenshot-tip-purchase-amount.png) |
+
 ## 概要
 
 新NISAでは、保有資産を売却するとその**簿価分の非課税枠が翌年1月1日に復活**します。本ツールはこの制度仕様を月次台帳モデルとして実装し、積立・取り崩し・枠の再利用を含めた長期の資産推移と非課税メリット（譲渡益税率 20.315% 換算）を算出します。
