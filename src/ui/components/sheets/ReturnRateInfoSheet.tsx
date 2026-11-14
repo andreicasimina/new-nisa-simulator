@@ -56,23 +56,23 @@ export const ReturnRateInfoSheet: React.FC<ReturnRateInfoSheetProps> = ({
                 onClose();
               }}
               className={cn(
-                'text-left bg-bg-surface border p-3 rounded-lg flex flex-col gap-1.5 transition-all cursor-pointer',
+                'text-left bg-bg-surface border p-2.5 rounded-lg flex flex-col gap-1.5 transition-colors cursor-pointer',
                 isSelected
-                  ? 'border-text-primary ring-1 ring-text-primary bg-bg-input/30'
+                  ? 'border-text-primary'
                   : 'border-border-subtle hover:border-gray-400'
               )}
             >
-              <div className="flex items-center justify-between w-full">
+              <div className="flex items-center justify-between gap-2 w-full">
                 <span className="text-body-14-semibold text-text-primary">
                   {opt.title}
                 </span>
                 {isSelected && (
-                  <span className="text-caption-12 text-text-secondary font-medium px-1.5 py-0.5 bg-border-subtle rounded">
+                  <span className="text-caption-12 text-text-muted px-[5px] py-px bg-border-subtle rounded-[4px] whitespace-nowrap shrink-0">
                     選択中
                   </span>
                 )}
               </div>
-              <p className="text-caption-12 text-text-secondary leading-normal">
+              <p className="text-caption-12 text-text-secondary">
                 {opt.description}
               </p>
             </button>
@@ -82,7 +82,7 @@ export const ReturnRateInfoSheet: React.FC<ReturnRateInfoSheetProps> = ({
         <button
           type="button"
           onClick={onClose}
-          className="text-center bg-bg-surface border border-border-subtle hover:bg-bg-input p-2.5 rounded-lg text-body-14-semibold text-text-primary cursor-pointer transition-colors mt-1"
+          className="text-center bg-bg-surface border border-border-subtle hover:bg-bg-input p-2.5 rounded-lg text-body-14-semibold text-text-primary cursor-pointer transition-colors"
         >
           自分で入力する
         </button>
