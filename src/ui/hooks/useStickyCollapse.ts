@@ -2,7 +2,7 @@ import { useEffect, useState, RefObject } from 'react';
 import { ResultCardHeights } from '@/ui/components/result/ResultCard';
 
 const HEADER_GAP_PX = 16;
-const STICKY_TOP_PX = 12;
+const STICKY_TOP_PX = 24;
 const COLLAPSE_RATIO = 0.25;
 
 /**

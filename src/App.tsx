@@ -128,7 +128,7 @@ export const App: React.FC = () => {
       </div>
 
       {/* Full-width Footer */}
-      <Footer className="mt-8" />
+      <Footer />
 
       {/* Year Detail Bottom Sheet with Carousel/Stepper Navigation */}
       <ResultDetailsSheet

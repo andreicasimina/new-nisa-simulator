@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ className }) => {
   return (
-    <header className={cn('flex items-center justify-center py-4', className)}>
+    <header className={cn('flex items-center justify-center', className)}>
       <h1 className="text-display-28 text-text-primary whitespace-nowrap">
         {APP_TITLE}
       </h1>
