@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputField } from '@/ui/components/common/InputField';
+import { LabeledField } from '@/ui/components/common/LabeledField';
 import { InfoButton } from '@/ui/components/common/InfoButton';
 import { InputUnit } from '@/ui/types/units';
 import { cn } from '@/ui/lib/utils';
@@ -36,40 +36,27 @@ export const PurchaseSettings: React.FC<PurchaseSettingsProps> = ({
 
       {/* Monthly Row */}
       <div className="grid grid-cols-2 gap-3 w-full">
-        <div className="flex flex-col gap-1">
-          <label className="text-caption-12 text-text-secondary">
-            積立 (毎月)
-          </label>
-          <InputField
-            value={tsumitateMonthly}
-            onChange={onTsumitateMonthlyChange}
-            unit={InputUnit.YEN}
-          />
-        </div>
-
-        <div className="flex flex-col gap-1">
-          <label className="text-caption-12 text-text-secondary">
-            成長 (毎月)
-          </label>
-          <InputField
-            value={growthMonthly}
-            onChange={onGrowthMonthlyChange}
-            unit={InputUnit.YEN}
-          />
-        </div>
-      </div>
-
-      {/* Annual Bonus Row */}
-      <div className="flex flex-col gap-1 w-full">
-        <label className="text-caption-12 text-text-secondary">
-          成長 (年間ボーナス)
-        </label>
-        <InputField
-          value={growthAnnualLumpSum}
-          onChange={onGrowthAnnualLumpSumChange}
+        <LabeledField
+          label="積立 (毎月)"
+          value={tsumitateMonthly}
+          onChange={onTsumitateMonthlyChange}
+          unit={InputUnit.YEN}
+        />
+        <LabeledField
+          label="成長 (毎月)"
+          value={growthMonthly}
+          onChange={onGrowthMonthlyChange}
           unit={InputUnit.YEN}
         />
       </div>
+
+      {/* Annual Bonus Row */}
+      <LabeledField
+        label="成長 (年間ボーナス)"
+        value={growthAnnualLumpSum}
+        onChange={onGrowthAnnualLumpSumChange}
+        unit={InputUnit.YEN}
+      />
     </div>
   );
 };

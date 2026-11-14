@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BottomSheet } from './BottomSheet';
 import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
-import { InputField } from '@/ui/components/common/InputField';
+import { LabeledField } from '@/ui/components/common/LabeledField';
 import { Button } from '@/ui/components/common/Button';
 import { InputUnit } from '@/ui/types/units';
 import { cn } from '@/ui/lib/utils';
@@ -94,16 +94,12 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         </div>
 
         {/* Year of Withdrawal */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-caption-12 text-text-secondary">
-            売却年（1 〜 {maxYears} 年目）
-          </label>
-          <InputField
-            value={yearIndex}
-            onChange={(val) => setYearIndex(Math.min(Math.max(1, val), maxYears))}
-            unit={InputUnit.YEAR}
-          />
-        </div>
+        <LabeledField
+          label={`売却年（1 〜 ${maxYears} 年目）`}
+          value={yearIndex}
+          onChange={(val) => setYearIndex(Math.min(Math.max(1, val), maxYears))}
+          unit={InputUnit.YEAR}
+        />
 
         {/* Bucket selector */}
         <div className="flex flex-col gap-1.5 w-full">
@@ -130,16 +126,12 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         </div>
 
         {/* Withdrawal Amount */}
-        <div className="flex flex-col gap-1 w-full">
-          <label className="text-caption-12 text-text-secondary">
-            出金額
-          </label>
-          <InputField
-            value={amount}
-            onChange={(val) => setAmount(val)}
-            unit={InputUnit.YEN}
-          />
-        </div>
+        <LabeledField
+          label="出金額"
+          value={amount}
+          onChange={(val) => setAmount(val)}
+          unit={InputUnit.YEN}
+        />
 
         {/* Action Buttons */}
         <div className="flex flex-col gap-2 pt-2">
