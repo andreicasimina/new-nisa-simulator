@@ -7,7 +7,6 @@ interface ResultCardCollapsedProps {
   totalMarketValue: number;
   tsumitateMarketValue: number;
   growthMarketValue: number;
-  onOpenDetails: () => void;
 }
 
 export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
@@ -15,13 +14,16 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
   totalMarketValue,
   tsumitateMarketValue,
   growthMarketValue,
-  onOpenDetails,
 }) => {
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <button
       type="button"
-      onClick={onOpenDetails}
-      aria-label={`${label}の詳細を見る`}
+      onClick={handleScrollToTop}
+      aria-label="ページトップへ戻る"
       className="w-full flex flex-col gap-[9px] items-center cursor-pointer relative group"
     >
       <p className="text-caption-12 text-text-secondary whitespace-nowrap">

@@ -128,7 +128,6 @@ export const ResultCard: React.FC<ResultCardProps> = ({
                 totalMarketValue={summary.finalMarketValue}
                 tsumitateMarketValue={tsumitateMarketValue}
                 growthMarketValue={growthMarketValue}
-                onOpenDetails={() => onOpenDetails()}
               />
             </div>
 
