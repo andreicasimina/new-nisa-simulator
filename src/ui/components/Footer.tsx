@@ -11,12 +11,12 @@ export const Footer: React.FC<FooterProps> = ({ className }) => {
   return (
     <footer
       className={cn(
-        'w-full bg-bg-surface border-t border-border-subtle flex flex-col items-center px-5 py-8 mt-8',
+        'w-full bg-bg-surface border-t border-border-subtle flex flex-col items-center px-5 py-8',
         className
       )}
     >
-      <div className="w-full max-w-[351px] flex flex-col items-center gap-3">
-        <p className="text-caption-12 text-text-muted text-center leading-relaxed">
+      <div className="w-full flex flex-col items-center gap-3">
+        <p className="text-caption-12 text-text-muted text-center">
           ※ 本ツールの計算結果は将来の運用成果を保証するものではありません。参考値としてご利用ください。
         </p>
         <a

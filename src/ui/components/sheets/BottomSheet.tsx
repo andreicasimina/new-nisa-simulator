@@ -68,13 +68,13 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
           }
         }}
         className={cn(
-          'relative z-10 w-full max-w-[393px] bg-bg-surface rounded-t-2xl sm:rounded-b-2xl shadow-[0px_-4px_20px_0px_rgba(0,0,0,0.08)] flex flex-col max-h-[90vh] overflow-hidden',
+          'relative z-10 w-full max-w-[393px] bg-bg-surface rounded-t-2xl sm:rounded-b-2xl shadow-[0px_-4px_20px_0px_rgba(0,0,0,0.08)] flex flex-col min-h-[426px] max-h-[90vh] overflow-hidden',
           isClosing ? 'animate-slide-down' : 'animate-slide-up',
           className
         )}
       >
         {/* Grab Handle */}
-        <div className="flex justify-center pt-2 pb-1 shrink-0">
+        <div className="flex justify-center pt-2 pb-2.5 shrink-0">
           <div className="w-9 h-1 bg-bg-pressed rounded-full" />
         </div>
 
