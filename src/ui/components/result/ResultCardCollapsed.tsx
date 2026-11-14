@@ -1,8 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { cn } from '@/ui/lib/utils';
 import { formatYen } from '@/ui/utils/formatters';
-import { IconButton } from '@/ui/components/common/IconButton';
 
 interface ResultCardCollapsedProps {
   label: string;
@@ -10,7 +8,6 @@ interface ResultCardCollapsedProps {
   tsumitateMarketValue: number;
   growthMarketValue: number;
   onOpenDetails: () => void;
-  className?: string;
 }
 
 export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
@@ -19,31 +16,19 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
   tsumitateMarketValue,
   growthMarketValue,
   onOpenDetails,
-  className,
 }) => {
   return (
-    <div
+    <button
+      type="button"
       onClick={onOpenDetails}
-      className={cn(
-        'w-full flex flex-col gap-[9px] items-center cursor-pointer relative',
-        className
-      )}
+      aria-label={`${label}の詳細を見る`}
+      className="w-full flex flex-col gap-[9px] items-center cursor-pointer relative group"
     >
       <p className="text-caption-12 text-text-secondary whitespace-nowrap">
         {label}
       </p>
 
-      <IconButton
-        size="none"
-        onClick={(e) => {
-          e.stopPropagation();
-          onOpenDetails();
-        }}
-        className="absolute top-0 right-0"
-        aria-label="詳細を見る"
-      >
-        <ArrowUpRight className="w-4 h-4" />
-      </IconButton>
+      <ArrowUpRight className="w-4 h-4 absolute top-0 right-0 text-text-muted group-hover:text-text-secondary transition-colors" />
 
       <div className="w-full flex flex-col gap-1 items-center justify-center text-center">
         <span className="text-heading-20 text-text-primary whitespace-nowrap">
@@ -53,6 +38,6 @@ export const ResultCardCollapsed: React.FC<ResultCardCollapsedProps> = ({
           (積立 {formatYen(tsumitateMarketValue)} | 成長 {formatYen(growthMarketValue)})
         </span>
       </div>
-    </div>
+    </button>
   );
 };

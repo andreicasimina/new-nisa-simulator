@@ -1,37 +1,34 @@
 import React from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 
 interface WithdrawalHeaderProps {
   isExpanded: boolean;
   onToggle: () => void;
   count?: number;
-  className?: string;
 }
 
 export const WithdrawalHeader: React.FC<WithdrawalHeaderProps> = ({
   isExpanded,
   onToggle,
   count = 0,
-  className,
 }) => {
   return (
     <button
       type="button"
       onClick={onToggle}
-      className={cn(
-        'flex items-center gap-1.5 text-left cursor-pointer select-none group w-fit',
-        className
-      )}
+      aria-expanded={isExpanded}
+      className="flex items-center gap-1.5 text-left cursor-pointer select-none group w-fit"
     >
       <span className="text-body-14-semibold text-text-primary group-hover:text-text-secondary transition-colors">
         売却設定 ({count})
       </span>
-      {isExpanded ? (
-        <ChevronUp className="w-3.5 h-3.5 text-text-primary transition-transform" />
-      ) : (
-        <ChevronDown className="w-3.5 h-3.5 text-text-primary transition-transform" />
-      )}
+      <ChevronDown
+        className={cn(
+          'w-3.5 h-3.5 text-text-primary transition-transform duration-200',
+          isExpanded && 'rotate-180'
+        )}
+      />
     </button>
   );
 };
