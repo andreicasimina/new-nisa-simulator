@@ -160,6 +160,11 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
         ))}
       </div>
 
+      {/* Tap hint */}
+      <p className="text-caption-10 text-text-muted text-center whitespace-nowrap">
+        ※ 棒グラフをタップで詳細結果を表示
+      </p>
+
       {/* Plot + Y labels (right) + X labels (bottom) */}
       <div className="w-full grid grid-cols-[minmax(0,1fr)_auto] gap-x-[5px] gap-y-[3px]">
         <div
