@@ -32,10 +32,10 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
           key={withdrawal.id}
           className="card flex gap-3 items-start justify-between p-2.5 w-full"
         >
-          <div className="flex flex-col gap-2 flex-1 min-w-0">
+          <div className="flex flex-col gap-3 flex-1 min-w-0">
             {/* Top row: Label & Year */}
             <div className="flex items-center justify-between gap-2">
-              <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
                 <span className="text-caption-12 text-text-secondary">
                   ラベル
                 </span>
@@ -43,7 +43,7 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
                   {withdrawal.label || '売却'}
                 </span>
               </div>
-              <div className="flex flex-col gap-0.5 flex-1 min-w-0 text-right">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
                 <span className="text-caption-12 text-text-secondary">
                   売却年
                 </span>
@@ -55,7 +55,7 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
 
             {/* Bottom row: Bucket & Amount */}
             <div className="flex items-center justify-between gap-2">
-              <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
                 <span className="text-caption-12 text-text-secondary">
                   売却元
                 </span>
@@ -63,7 +63,7 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
                   {BUCKET_LABELS[withdrawal.targetBucket]}
                 </span>
               </div>
-              <div className="flex flex-col gap-0.5 flex-1 min-w-0 text-right">
+              <div className="flex flex-col gap-1 flex-1 min-w-0">
                 <span className="text-caption-12 text-text-secondary">
                   売却額
                 </span>

@@ -24,18 +24,16 @@ export const TipListSheet: React.FC<TipListSheetProps> = ({
 }) => {
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose} title={title}>
-      <div className="flex flex-col gap-3 p-1 pb-4">
+      <div className="flex flex-col gap-2.5">
         {tips.map((tip) => (
-          <div
-            key={tip.title}
-            className="flex flex-col gap-1.5 pb-3 border-b border-border-subtle last:border-b-0"
-          >
-            <h4 className="text-body-14-semibold text-text-primary">
+          <div key={tip.title} className="flex flex-col gap-2.5">
+            <h4 className="text-caption-12-bold text-text-primary">
               {tip.title}
             </h4>
-            <p className="text-caption-12 text-text-secondary leading-relaxed">
+            <p className="text-caption-12 text-text-secondary">
               {tip.description}
             </p>
+            <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
           </div>
         ))}
       </div>
