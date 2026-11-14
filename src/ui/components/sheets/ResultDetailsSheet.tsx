@@ -1,10 +1,12 @@
 import React from 'react';
 import { BottomSheet } from './BottomSheet';
-import { YearlyRecord, MilestoneWithdrawal } from '@/core/types/nisa';
+import { YearlyRecord } from '@/core/types/nisa';
 import { formatYen } from '@/ui/utils/formatters';
+import { sumHoldings } from '@/ui/utils/holdings';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { STATUTORY_LIMITS } from '@/core/engine/constants';
 import { IconButton } from '@/ui/components/common/IconButton';
+import { StatCell, StatSection } from '@/ui/components/common/StatSection';
 
 interface ResultDetailsSheetProps {
   isOpen: boolean;
@@ -12,8 +14,6 @@ interface ResultDetailsSheetProps {
   yearIndex: number;
   onYearChange: (year: number) => void;
   yearlyRecords: YearlyRecord[];
-  withdrawals: MilestoneWithdrawal[];
-  horizonYears: number;
 }
 
 export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
@@ -22,19 +22,13 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
   yearIndex,
   onYearChange,
   yearlyRecords,
-  withdrawals,
-  horizonYears,
 }) => {
   const currentRecord = yearlyRecords.find((r) => r.yearIndex === yearIndex);
 
   if (!currentRecord) return null;
 
-  const totalMarketValue =
-    currentRecord.holdings.tsumitate.marketValue +
-    currentRecord.holdings.growth.marketValue;
-  const totalPrincipal =
-    currentRecord.holdings.tsumitate.principal +
-    currentRecord.holdings.growth.principal;
+  const { marketValue: totalMarketValue, principal: totalPrincipal } =
+    sumHoldings(currentRecord.holdings);
   const tsumitateGain = Math.max(
     0,
     currentRecord.holdings.tsumitate.marketValue -
@@ -46,25 +40,13 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
       currentRecord.holdings.growth.principal
   );
 
-  // Withdrawals in this year
-  const yearWithdrawals = withdrawals.filter((w) => w.yearIndex === yearIndex);
-  const withdrawnTsumitate = yearWithdrawals
-    .filter((w) => w.targetBucket === 'tsumitate')
-    .reduce((sum, w) => sum + w.amount, 0);
-  const withdrawnGrowth = yearWithdrawals
-    .filter((w) => w.targetBucket === 'growth')
-    .reduce((sum, w) => sum + w.amount, 0);
-  const withdrawnProportional = yearWithdrawals
-    .filter((w) => w.targetBucket === 'proportional')
-    .reduce((sum, w) => sum + w.amount, 0);
-
   // Lifetime quota calculation
   const lifetimeUsed =
     STATUTORY_LIMITS.LIFETIME_AGGREGATE -
     currentRecord.remainingLifetimeQuota.total;
 
   const canGoPrev = yearIndex > 1;
-  const canGoNext = yearIndex < horizonYears;
+  const canGoNext = yearIndex < yearlyRecords.length;
 
   return (
     <BottomSheet isOpen={isOpen} onClose={onClose}>
@@ -106,101 +88,53 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
         </div>
 
         {/* Section 1: 保有額 */}
-        <div className="flex flex-col gap-2">
-          <h4 className="text-body-14-semibold text-text-primary">
-            保有額
-          </h4>
-          <div className="grid grid-cols-2 gap-3 bg-bg-input p-3 rounded-lg">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-caption-12 text-text-secondary">
-                積立 (評価額)
-              </span>
-              <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(currentRecord.holdings.tsumitate.marketValue)}
-              </span>
-              <span className="text-caption-12 text-text-muted">
-                (運用益: {formatYen(tsumitateGain)})
-              </span>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-caption-12 text-text-secondary">
-                成長 (評価額)
-              </span>
-              <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(currentRecord.holdings.growth.marketValue)}
-              </span>
-              <span className="text-caption-12 text-text-muted">
-                (運用益: {formatYen(growthGain)})
-              </span>
-            </div>
-          </div>
-        </div>
+        <StatSection title="保有額">
+          <StatCell
+            label="積立 (評価額)"
+            value={formatYen(currentRecord.holdings.tsumitate.marketValue)}
+            sub={`(運用益: ${formatYen(tsumitateGain)})`}
+          />
+          <StatCell
+            label="成長 (評価額)"
+            value={formatYen(currentRecord.holdings.growth.marketValue)}
+            sub={`(運用益: ${formatYen(growthGain)})`}
+          />
+        </StatSection>
 
         {/* Section 2: 売却予定額 */}
-        <div className="flex flex-col gap-2">
-          <h4 className="text-body-14-semibold text-text-primary">
-            売却予定額
-          </h4>
-          <div className="grid grid-cols-2 gap-3 bg-bg-input p-3 rounded-lg">
-            <div className="flex flex-col gap-0.5">
-              <span className="text-caption-12 text-text-secondary">
-                積立 (売却額)
-              </span>
-              <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(withdrawnTsumitate + (withdrawnProportional > 0 ? withdrawnProportional / 2 : 0))}
-              </span>
-            </div>
-            <div className="flex flex-col gap-0.5">
-              <span className="text-caption-12 text-text-secondary">
-                成長 (売却額)
-              </span>
-              <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(withdrawnGrowth + (withdrawnProportional > 0 ? withdrawnProportional / 2 : 0))}
-              </span>
-            </div>
-          </div>
-        </div>
+        <StatSection title="売却予定額">
+          <StatCell
+            label="積立 (売却額)"
+            value={formatYen(currentRecord.withdrawals.tsumitate)}
+          />
+          <StatCell
+            label="成長 (売却額)"
+            value={formatYen(currentRecord.withdrawals.growth)}
+          />
+        </StatSection>
 
         {/* Section 3: 投資枠 */}
-        <div className="flex flex-col gap-2">
-          <h4 className="text-body-14-semibold text-text-primary">
-            投資枠
-          </h4>
-          <div className="flex flex-col gap-2.5 bg-bg-input p-3 rounded-lg">
-            {/* Lifetime Quota */}
-            <div className="flex flex-col gap-0.5">
-              <span className="text-caption-12 text-text-secondary">
-                生涯投資枠（使用額）
-              </span>
-              <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(lifetimeUsed)} / {formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}
-              </span>
-              {currentRecord.restoredPrincipalThisYear > 0 && (
-                <span className="text-caption-12 text-gain font-medium">
-                  ↳ 前年の売却により +{formatYen(currentRecord.restoredPrincipalThisYear)} 枠が復活
-                </span>
-              )}
-            </div>
-
-            {/* Annual Quota */}
-            <div className="flex flex-col gap-0.5 border-t border-border-subtle pt-2">
-              <span className="text-caption-12 text-text-secondary">
-                年間投資枠（使用額）
-              </span>
-              <span className="text-body-16 text-text-primary font-medium">
-                {formatYen(
-                  currentRecord.annualContributions.tsumitate +
-                    currentRecord.annualContributions.growth
-                )}{' '}
-                / {formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}
-              </span>
-              <span className="text-caption-12 text-text-muted">
-                (積立: {formatYen(currentRecord.annualContributions.tsumitate)} /{' '}
-                {formatYen(STATUTORY_LIMITS.ANNUAL_TSUMITATE)})
-              </span>
-            </div>
-          </div>
-        </div>
+        <StatSection title="投資枠" columns={1}>
+          <StatCell
+            label="生涯投資枠（使用額）"
+            value={`${formatYen(lifetimeUsed)} / ${formatYen(STATUTORY_LIMITS.LIFETIME_AGGREGATE)}`}
+            sub={
+              currentRecord.restoredPrincipalThisYear > 0
+                ? `↳ 前年の売却により +${formatYen(currentRecord.restoredPrincipalThisYear)} 枠が復活`
+                : undefined
+            }
+            subClassName="text-gain font-medium"
+          />
+          <StatCell
+            label="年間投資枠（使用額）"
+            value={`${formatYen(
+              currentRecord.annualContributions.tsumitate +
+                currentRecord.annualContributions.growth
+            )} / ${formatYen(STATUTORY_LIMITS.ANNUAL_AGGREGATE)}`}
+            sub={`(積立: ${formatYen(currentRecord.annualContributions.tsumitate)} / ${formatYen(STATUTORY_LIMITS.ANNUAL_TSUMITATE)})`}
+            className="border-t border-border-subtle pt-2"
+          />
+        </StatSection>
       </div>
     </BottomSheet>
   );

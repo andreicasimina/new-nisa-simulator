@@ -177,8 +177,6 @@ export const App: React.FC = () => {
         yearIndex={selectedYear ?? plan.horizonYears}
         onYearChange={(newYear) => setSelectedYear(newYear)}
         yearlyRecords={result.yearly}
-        withdrawals={plan.withdrawals}
-        horizonYears={plan.horizonYears}
       />
 
       {/* Withdrawal Add / Edit Bottom Sheet */}
