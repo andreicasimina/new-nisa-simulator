@@ -1,4 +1,4 @@
-import { STATUTORY_LIMITS } from '@/core/engine/constants';
+import { MAX_HORIZON_YEARS, STATUTORY_LIMITS } from '@/core/engine/constants';
 import { NisaPlanState } from '@/core/types/state';
 import {
   BucketAmount,
@@ -157,7 +157,10 @@ export function executeWithdrawal(
 }
 
 export function simulateNisaPlan(state: NisaPlanState): SimulationResult {
-  const horizonYears = Math.max(1, state.horizonYears || 1);
+  const horizonYears = Math.min(
+    MAX_HORIZON_YEARS,
+    Math.max(1, state.horizonYears || 1)
+  );
   const monthlyRate = Math.pow(1 + Math.max(0, state.expectedReturnRate || 0), 1 / MONTHS_PER_YEAR) - 1;
 
   const currentHoldings: Holdings = {

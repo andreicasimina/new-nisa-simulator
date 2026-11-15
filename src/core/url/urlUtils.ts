@@ -23,7 +23,7 @@ const milestoneWithdrawalSchema = z.object({
 
 const nisaPlanStateSchema = z.object({
   age: z.number().int().min(18).max(100),
-  horizonYears: z.number().int().min(1).max(50),
+  horizonYears: z.number().int().min(1).max(100),
   expectedReturnRate: z.number().min(0).max(0.20),
   tsumitateMonthly: z.number().min(0),
   growthMonthly: z.number().min(0),

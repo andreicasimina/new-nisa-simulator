@@ -86,7 +86,7 @@ export const App: React.FC = () => {
   const handleOpenDetails = (yearIndex?: number) => {
     setActiveSheet({
       type: 'details',
-      yearIndex: yearIndex ?? plan.horizonYears,
+      yearIndex: yearIndex ?? result.yearly.length,
     });
   };
 
@@ -102,7 +102,7 @@ export const App: React.FC = () => {
         <ResultCard
           summary={result.summary}
           yearly={result.yearly}
-          horizonYears={plan.horizonYears}
+          horizonYears={result.yearly.length}
           hasWithdrawals={plan.withdrawals.length > 0}
           plan={plan}
           isCollapsed={isCollapsed}
@@ -137,7 +137,7 @@ export const App: React.FC = () => {
         yearIndex={
           activeSheet?.type === 'details'
             ? activeSheet.yearIndex
-            : plan.horizonYears
+            : result.yearly.length
         }
         onYearChange={(yearIndex) =>
           setActiveSheet({ type: 'details', yearIndex })
@@ -153,7 +153,7 @@ export const App: React.FC = () => {
           activeSheet?.type === 'withdrawal' ? activeSheet.withdrawal : null
         }
         plan={plan}
-        maxYears={plan.horizonYears}
+        maxYears={result.yearly.length}
         onAdd={addWithdrawal}
         onUpdate={updateWithdrawal}
         onDelete={removeWithdrawal}

@@ -1,5 +1,7 @@
 import { NisaPlanState } from '@/core/types/state';
 
+export const MAX_HORIZON_YEARS = 100;
+
 export const STATUTORY_LIMITS = {
   ANNUAL_AGGREGATE: 3_600_000,
   ANNUAL_TSUMITATE: 1_200_000,
