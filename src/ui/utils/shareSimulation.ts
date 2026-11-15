@@ -2,7 +2,12 @@ import { toBlob } from 'html-to-image';
 
 export const SHARE_TITLE = '新NISAシミュレーター';
 export const DEFAULT_SUMMARY_TEXT = '新NISAのシミュレーション結果を作成しました。';
+export const SHARE_HASHTAGS = '#新NISA #資産形成';
 export const SHARE_IMAGE_FILENAME = 'nisa-simulation.png';
+
+export function buildShareText(summaryText: string, shareUrl?: string): string {
+  return [summaryText, shareUrl, SHARE_HASHTAGS].filter(Boolean).join('\n\n');
+}
 
 export type ShareOutcome = 'shared' | 'copied' | 'aborted' | 'failed';
 
@@ -108,7 +113,7 @@ export async function shareSimulationResult({
         files: [file],
         title: SHARE_TITLE,
         // Apps like LINE and X drop `url` when a file is attached, so include it in `text`.
-        text: `${summaryText}\n${shareUrl}`,
+        text: buildShareText(summaryText, shareUrl),
       });
       if (result !== 'failed') return result;
     }
@@ -117,7 +122,7 @@ export async function shareSimulationResult({
   if (navigatorObj.share) {
     const result = await tryShare(navigatorObj, {
       title: SHARE_TITLE,
-      text: summaryText,
+      text: buildShareText(summaryText),
       url: shareUrl,
     });
     if (result !== 'failed') return result;

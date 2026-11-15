@@ -7,7 +7,7 @@ import { NisaPlanState } from '@/core/types/state';
 describe('urlUtils', () => {
   it('performs full round-trip encoding and decoding with DEFAULT_PLAN_STATE', () => {
     const url = createShareUrl(DEFAULT_PLAN_STATE, 'https://example.com');
-    expect(url).toContain('https://example.com#data=');
+    expect(url).toContain('https://example.com#d=');
 
     const hash = url.split('#')[1];
     const decoded = readPlanFromUrl(hash);
@@ -28,14 +28,14 @@ describe('urlUtils', () => {
       },
       withdrawals: [
         {
-          id: 'w-condo',
+          id: 'w-0',
           yearIndex: 7,
           targetBucket: 'growth',
           amount: 6_000_000,
           label: 'Condo Down Payment',
         },
         {
-          id: 'w-tuition',
+          id: 'w-1',
           yearIndex: 12,
           targetBucket: 'proportional',
           amount: 2_000_000,
@@ -49,9 +49,15 @@ describe('urlUtils', () => {
     expect(decoded).toEqual(customPlan);
   });
 
+  it('produces short URL-safe hashes without +, /, or =', () => {
+    const encoded = createShareUrl(DEFAULT_PLAN_STATE).replace(/^#d=/, '');
+    expect(encoded.length).toBeLessThan(20);
+    expect(encoded).not.toMatch(/[+/=]/);
+  });
+
   it('accepts hash with or without leading #', () => {
     const url = createShareUrl(DEFAULT_PLAN_STATE);
-    const withHash = url.split('https://example.com')[1] || url; // starts with #data=...
+    const withHash = url.split('https://example.com')[1] || url;
     const withoutHash = withHash.replace(/^#/, '');
 
     expect(readPlanFromUrl(withHash)).toEqual(DEFAULT_PLAN_STATE);
@@ -61,29 +67,23 @@ describe('urlUtils', () => {
   it('returns null on empty, missing data, or corrupted string', () => {
     expect(readPlanFromUrl('')).toBeNull();
     expect(readPlanFromUrl('foo=bar')).toBeNull();
-    expect(readPlanFromUrl('data=corrupted_garbage_string')).toBeNull();
+    expect(readPlanFromUrl('d=corrupted_garbage_string')).toBeNull();
   });
 
   it('rejects data that violates statutory bounds via Zod validation', () => {
+    const encode = (obj: unknown) =>
+      LZString.compressToBase64(JSON.stringify(obj))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+
     // Age out of bounds (< 18)
-    const invalidAge = { ...DEFAULT_PLAN_STATE, age: 10 };
-    const encodedInvalidAge = LZString.compressToEncodedURIComponent(
-      JSON.stringify(invalidAge)
-    );
-    expect(readPlanFromUrl(`data=${encodedInvalidAge}`)).toBeNull();
+    expect(readPlanFromUrl(`d=${encode({ a: 10 })}`)).toBeNull();
 
     // Return rate > 20%
-    const invalidReturnRate = { ...DEFAULT_PLAN_STATE, expectedReturnRate: 0.50 };
-    const encodedInvalidRate = LZString.compressToEncodedURIComponent(
-      JSON.stringify(invalidReturnRate)
-    );
-    expect(readPlanFromUrl(`data=${encodedInvalidRate}`)).toBeNull();
+    expect(readPlanFromUrl(`d=${encode({ r: 0.5 })}`)).toBeNull();
 
     // Negative contribution
-    const negativeContribution = { ...DEFAULT_PLAN_STATE, tsumitateMonthly: -500 };
-    const encodedNegative = LZString.compressToEncodedURIComponent(
-      JSON.stringify(negativeContribution)
-    );
-    expect(readPlanFromUrl(`data=${encodedNegative}`)).toBeNull();
+    expect(readPlanFromUrl(`d=${encode({ t: -500 })}`)).toBeNull();
   });
 });

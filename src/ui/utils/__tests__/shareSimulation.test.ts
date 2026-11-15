@@ -1,12 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
+  SHARE_HASHTAGS,
   SHARE_IMAGE_FILENAME,
   SHARE_TITLE,
   ShareNavigator,
+  buildShareText,
   shareSimulationResult,
 } from '../shareSimulation';
 
-const SHARE_URL = 'https://example.com/new-nisa-simulator/?p=abc';
+const SHARE_URL = 'https://example.com/new-nisa-simulator/#d=NoRgukA';
 const SUMMARY = '新NISAシミュレーション結果（20年後の評価額: 1,000万円）';
 const FAKE_ELEMENT = {} as HTMLElement;
 const FAKE_FILE = new File(['png'], SHARE_IMAGE_FILENAME, { type: 'image/png' });
@@ -17,8 +19,20 @@ const abortError = () => {
   return err;
 };
 
+describe('buildShareText', () => {
+  it('separates summary, short URL, and hashtags with blank lines', () => {
+    expect(buildShareText(SUMMARY, SHARE_URL)).toBe(
+      `${SUMMARY}\n\n${SHARE_URL}\n\n${SHARE_HASHTAGS}`
+    );
+  });
+
+  it('omits URL line when shareUrl is not provided', () => {
+    expect(buildShareText(SUMMARY)).toBe(`${SUMMARY}\n\n${SHARE_HASHTAGS}`);
+  });
+});
+
 describe('shareSimulationResult', () => {
-  it('shares image file and URL embedded in text when canShare({ files }) is true', async () => {
+  it('shares image file and URL with hashtags embedded in text when canShare({ files }) is true', async () => {
     const share = vi.fn().mockResolvedValue(undefined);
     const canShare = vi.fn().mockReturnValue(true);
     const writeText = vi.fn();
@@ -45,7 +59,7 @@ describe('shareSimulationResult', () => {
     expect(share).toHaveBeenCalledWith({
       files: [FAKE_FILE],
       title: SHARE_TITLE,
-      text: `${SUMMARY}\n${SHARE_URL}`,
+      text: `${SUMMARY}\n\n${SHARE_URL}\n\n${SHARE_HASHTAGS}`,
     });
     expect(writeText).not.toHaveBeenCalled();
   });
@@ -85,7 +99,7 @@ describe('shareSimulationResult', () => {
     expect(share).toHaveBeenCalledTimes(1);
     expect(share).toHaveBeenCalledWith({
       title: SHARE_TITLE,
-      text: SUMMARY,
+      text: `${SUMMARY}\n\n${SHARE_HASHTAGS}`,
       url: SHARE_URL,
     });
     expect(writeText).not.toHaveBeenCalled();
@@ -106,7 +120,7 @@ describe('shareSimulationResult', () => {
     expect(outcome).toBe('shared');
     expect(share).toHaveBeenCalledWith({
       title: SHARE_TITLE,
-      text: SUMMARY,
+      text: `${SUMMARY}\n\n${SHARE_HASHTAGS}`,
       url: SHARE_URL,
     });
   });
