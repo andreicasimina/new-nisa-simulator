@@ -4,6 +4,7 @@ import { cn } from '@/ui/lib/utils';
 import { createShareUrl } from '@/core/url/urlUtils';
 import { NisaPlanState } from '@/core/types/state';
 import { shareSimulationResult } from '@/ui/utils/shareSimulation';
+import { trackEvent } from '@/ui/lib/analytics';
 import { Button } from './Button';
 
 interface ShareButtonProps {
@@ -53,6 +54,13 @@ export const ShareButton: React.FC<ShareButtonProps> = ({
           window.clearTimeout(timerRef.current);
         }
         timerRef.current = window.setTimeout(() => setCopied(false), 2000);
+      }
+
+      if (outcome === 'shared' || outcome === 'copied') {
+        trackEvent('share', {
+          method: outcome === 'shared' ? 'web_share' : 'copy_url',
+          content_type: 'simulation',
+        });
       }
     } finally {
       isSharingRef.current = false;
