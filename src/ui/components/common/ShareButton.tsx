@@ -3,17 +3,25 @@ import { Share2, Check } from 'lucide-react';
 import { cn } from '@/ui/lib/utils';
 import { createShareUrl } from '@/core/url/urlUtils';
 import { NisaPlanState } from '@/core/types/state';
-import { APP_TITLE } from '@/ui/utils/constants';
+import { shareSimulationResult } from '@/ui/utils/shareSimulation';
 import { Button } from './Button';
 
 interface ShareButtonProps {
   plan: NisaPlanState;
+  chartRef?: React.RefObject<HTMLElement | null>;
+  summaryText?: string;
   className?: string;
 }
 
-export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => {
+export const ShareButton: React.FC<ShareButtonProps> = ({
+  plan,
+  chartRef,
+  summaryText,
+  className,
+}) => {
   const [copied, setCopied] = useState(false);
   const timerRef = useRef<number | null>(null);
+  const isSharingRef = useRef(false);
 
   useEffect(() => {
     return () => {
@@ -24,35 +32,30 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ plan, className }) => 
   }, []);
 
   const handleShare = async () => {
-    const fullUrl = createShareUrl(
-      plan,
-      `${window.location.origin}${window.location.pathname}`
-    );
+    if (isSharingRef.current) return;
+    isSharingRef.current = true;
 
-    // Try Web Share API on mobile
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: APP_TITLE,
-          text: '新NISAのシミュレーション結果を作成しました。',
-          url: fullUrl,
-        });
-        return;
-      } catch {
-        // Fallback to clipboard if share was canceled or failed
-      }
-    }
-
-    // Clipboard fallback
     try {
-      await navigator.clipboard.writeText(fullUrl);
-      setCopied(true);
-      if (timerRef.current !== null) {
-        window.clearTimeout(timerRef.current);
+      const fullUrl = createShareUrl(
+        plan,
+        `${window.location.origin}${window.location.pathname}`
+      );
+
+      const outcome = await shareSimulationResult({
+        shareUrl: fullUrl,
+        summaryText,
+        chartElement: chartRef?.current ?? undefined,
+      });
+
+      if (outcome === 'copied') {
+        setCopied(true);
+        if (timerRef.current !== null) {
+          window.clearTimeout(timerRef.current);
+        }
+        timerRef.current = window.setTimeout(() => setCopied(false), 2000);
       }
-      timerRef.current = window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Ignore
+    } finally {
+      isSharingRef.current = false;
     }
   };
 

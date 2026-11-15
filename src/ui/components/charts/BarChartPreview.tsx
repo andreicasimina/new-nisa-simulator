@@ -161,7 +161,10 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
       </div>
 
       {/* Tap hint */}
-      <p className="text-caption-10 text-text-muted text-center whitespace-nowrap">
+      <p
+        data-share-ignore="true"
+        className="text-caption-10 text-text-muted text-center whitespace-nowrap"
+      >
         ※ 棒グラフをタップで詳細結果を表示
       </p>
 
@@ -255,7 +258,7 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
       </div>
 
       {/* Mode toggle */}
-      <div className="w-full flex items-center justify-center">
+      <div data-share-ignore="true" className="w-full flex items-center justify-center">
         <div className="flex items-center gap-[5px] p-[3px] border border-border-subtle rounded-lg">
           {(
             [
