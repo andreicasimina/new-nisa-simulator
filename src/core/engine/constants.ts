@@ -24,7 +24,6 @@ export const DEFAULT_PLAN_STATE: NisaPlanState = {
 };
 
 export const DEFAULT_WITHDRAWAL = {
-  YEAR_INDEX: 10,
   AMOUNT: 1_000_000,
-  TARGET_BUCKET: 'growth',
+  TARGET_BUCKET: 'tsumitate',
 } as const;

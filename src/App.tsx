@@ -152,6 +152,7 @@ export const App: React.FC = () => {
         withdrawal={
           activeSheet?.type === 'withdrawal' ? activeSheet.withdrawal : null
         }
+        plan={plan}
         maxYears={plan.horizonYears}
         onAdd={addWithdrawal}
         onUpdate={updateWithdrawal}

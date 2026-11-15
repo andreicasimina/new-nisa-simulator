@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { BottomSheet } from './BottomSheet';
 import { MilestoneWithdrawal, BucketType } from '@/core/types/nisa';
+import { NisaPlanState } from '@/core/types/state';
+import { getAvailableToWithdraw } from '@/core/engine/availability';
 import { LabeledField } from '@/ui/components/common/LabeledField';
 import { TextInput } from '@/ui/components/common/TextInput';
 import { Button } from '@/ui/components/common/Button';
@@ -8,11 +10,13 @@ import { SegmentedControl } from '@/ui/components/common/SegmentedControl';
 import { InputUnit } from '@/ui/types/units';
 import { DEFAULT_WITHDRAWAL } from '@/core/engine/constants';
 import { BUCKET_OPTIONS } from '@/ui/utils/constants';
+import { formatYen } from '@/ui/utils/formatters';
 
 interface WithdrawalSheetProps {
   isOpen: boolean;
   onClose: () => void;
   withdrawal?: MilestoneWithdrawal | null; // If null, we are adding new
+  plan: NisaPlanState;
   maxYears: number;
   onAdd: (withdrawal: Omit<MilestoneWithdrawal, 'id'>) => void;
   onUpdate: (id: string, withdrawal: Omit<MilestoneWithdrawal, 'id'>) => void;
@@ -32,9 +36,7 @@ function toDraft(
 ): WithdrawalDraft {
   return {
     label: withdrawal?.label ?? '',
-    yearIndex:
-      withdrawal?.yearIndex ??
-      Math.min(DEFAULT_WITHDRAWAL.YEAR_INDEX, maxYears),
+    yearIndex: withdrawal?.yearIndex ?? maxYears,
     targetBucket: withdrawal?.targetBucket ?? DEFAULT_WITHDRAWAL.TARGET_BUCKET,
     amount: withdrawal?.amount ?? DEFAULT_WITHDRAWAL.AMOUNT,
   };
@@ -44,6 +46,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
   isOpen,
   onClose,
   withdrawal,
+  plan,
   maxYears,
   onAdd,
   onUpdate,
@@ -59,6 +62,11 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
       setDraft(toDraft(withdrawal, maxYears));
     }
   }, [isOpen, withdrawal, maxYears]);
+
+  const available = useMemo(
+    () => getAvailableToWithdraw(plan, draft.yearIndex, withdrawal?.id),
+    [plan, draft.yearIndex, withdrawal?.id]
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,18 +109,28 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           placeholder="例: 住宅購入の頭金、学費など"
         />
 
+        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+
         {/* Year of Withdrawal */}
-        <LabeledField
-          label="売却年"
-          value={draft.yearIndex}
-          onChange={(val) =>
-            setDraft((d) => ({
-              ...d,
-              yearIndex: Math.min(Math.max(1, val), maxYears),
-            }))
-          }
-          unit={InputUnit.YEAR}
-        />
+        <div className="flex flex-col gap-1 w-full">
+          <LabeledField
+            label="売却年"
+            value={draft.yearIndex}
+            onChange={(val) =>
+              setDraft((d) => ({
+                ...d,
+                yearIndex: Math.min(Math.max(1, val), maxYears),
+              }))
+            }
+            unit={InputUnit.YEAR}
+          />
+          <p className="text-caption-12 text-text-secondary">
+            売却可能額：つみたて {formatYen(available.tsumitate)} / 成長{' '}
+            {formatYen(available.growth)}
+          </p>
+        </div>
+
+        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
 
         {/* Bucket selector */}
         <div className="flex flex-col gap-1 w-full">
@@ -129,6 +147,8 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           />
         </div>
 
+        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+
         {/* Withdrawal Amount */}
         <LabeledField
           label="出金額"
@@ -137,8 +157,10 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           unit={InputUnit.YEN}
         />
 
+        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+
         {/* Action Buttons */}
-        <div className="flex flex-col gap-1.5 -mt-0.5">
+        <div className="flex flex-col gap-1.5">
           <Button type="submit">
             {withdrawal ? '変更を保存する' : '売却イベントを追加する'}
           </Button>

@@ -8,8 +8,8 @@ export const GITHUB_REPO_URL =
   'https://github.com/andreicasimina/new-nisa-simulator';
 
 export const BUCKET_LABELS: Record<BucketType, string> = {
-  growth: '成長投資枠',
   tsumitate: 'つみたて投資枠',
+  growth: '成長投資枠',
   proportional: '按分（両方）',
 };
 
