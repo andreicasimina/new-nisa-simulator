@@ -69,6 +69,13 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
     [plan, draft.yearIndex, withdrawal?.id]
   );
 
+  const bucketAvailable =
+    draft.targetBucket === 'tsumitate'
+      ? available.tsumitate
+      : draft.targetBucket === 'growth'
+        ? available.growth
+        : available.tsumitate + available.growth;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (draft.amount <= 0) return;
@@ -151,12 +158,20 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
         <Divider />
 
         {/* Withdrawal Amount */}
-        <LabeledField
-          label="出金額"
-          value={draft.amount}
-          onChange={(amount) => setDraft((d) => ({ ...d, amount }))}
-          unit={InputUnit.YEN}
-        />
+        <div className="flex flex-col gap-1 w-full">
+          <LabeledField
+            label="出金額"
+            value={draft.amount}
+            onChange={(amount) => setDraft((d) => ({ ...d, amount }))}
+            unit={InputUnit.YEN}
+          />
+          {draft.amount > bucketAvailable && (
+            <p className="text-caption-12 text-danger">
+              残高が不足しているため、{formatYen(bucketAvailable)}
+              しか売却されません。
+            </p>
+          )}
+        </div>
 
         <Divider />
 
