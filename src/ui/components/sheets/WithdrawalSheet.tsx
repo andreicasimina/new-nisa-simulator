@@ -164,6 +164,9 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
             value={draft.amount}
             onChange={(amount) => setDraft((d) => ({ ...d, amount }))}
             unit={InputUnit.YEN}
+            error={
+              draft.amount <= 0 ? '1万円以上を入力してください。' : undefined
+            }
           />
           {draft.amount > bucketAvailable && (
             <p className="text-caption-12 text-danger">
