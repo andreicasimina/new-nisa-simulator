@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { STATUTORY_LIMITS } from '@/core/engine/constants';
 import { IconButton } from '@/ui/components/common/IconButton';
 import { StatCell, StatSection } from '@/ui/components/common/StatSection';
+import { Divider } from '@/ui/components/common/Divider';
 
 interface ResultDetailsSheetProps {
   isOpen: boolean;
@@ -102,7 +103,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
           />
         </StatSection>
 
-        <div className="h-px w-full shrink-0 rounded-full bg-border-subtle" />
+        <Divider />
 
         {/* Section 2: 売却予定額 */}
         <StatSection title="売却予定額">
@@ -116,7 +117,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
           />
         </StatSection>
 
-        <div className="h-px w-full shrink-0 rounded-full bg-border-subtle" />
+        <Divider />
 
         {/* Section 3: 投資枠 */}
         <div className="flex flex-col gap-3">
@@ -134,7 +135,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
               </span>
             </div>
           </div>
-          <div className="h-px w-full shrink-0 rounded-full bg-border-subtle" />
+          <Divider />
           <div className="flex flex-col gap-1">
             <h4 className="text-body-14-semibold text-text-primary">生涯投資枠（使用額）</h4>
             <span className="text-body-16 text-text-primary font-medium">

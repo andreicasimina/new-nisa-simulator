@@ -1,5 +1,6 @@
 import React from 'react';
 import { BottomSheet } from './BottomSheet';
+import { Divider } from '@/ui/components/common/Divider';
 
 export interface TipItem {
   title: string;
@@ -33,7 +34,7 @@ export const TipListSheet: React.FC<TipListSheetProps> = ({
             <p className="text-caption-12 text-text-secondary">
               {tip.description}
             </p>
-            <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+            <Divider />
           </div>
         ))}
       </div>

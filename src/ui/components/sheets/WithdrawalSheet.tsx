@@ -7,6 +7,7 @@ import { LabeledField } from '@/ui/components/common/LabeledField';
 import { TextInput } from '@/ui/components/common/TextInput';
 import { Button } from '@/ui/components/common/Button';
 import { SegmentedControl } from '@/ui/components/common/SegmentedControl';
+import { Divider } from '@/ui/components/common/Divider';
 import { InputUnit } from '@/ui/types/units';
 import { DEFAULT_WITHDRAWAL } from '@/core/engine/constants';
 import { BUCKET_OPTIONS } from '@/ui/utils/constants';
@@ -109,7 +110,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           placeholder="例: 住宅購入の頭金、学費など"
         />
 
-        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+        <Divider />
 
         {/* Year of Withdrawal */}
         <div className="flex flex-col gap-1 w-full">
@@ -130,7 +131,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           </p>
         </div>
 
-        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+        <Divider />
 
         {/* Bucket selector */}
         <div className="flex flex-col gap-1 w-full">
@@ -147,7 +148,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           />
         </div>
 
-        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+        <Divider />
 
         {/* Withdrawal Amount */}
         <LabeledField
@@ -157,7 +158,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
           unit={InputUnit.YEN}
         />
 
-        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+        <Divider />
 
         {/* Action Buttons */}
         <div className="flex flex-col gap-1.5">

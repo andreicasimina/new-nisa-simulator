@@ -5,6 +5,7 @@ import { NisaPlanState } from '@/core/types/state';
 import { formatYen } from '@/ui/utils/formatters';
 import { BarChartPreview } from '@/ui/components/charts/BarChartPreview';
 import { ShareButton } from '@/ui/components/common/ShareButton';
+import { Divider } from '@/ui/components/common/Divider';
 
 interface ResultCardExpandedProps {
   label: string;
@@ -41,7 +42,7 @@ export const ResultCardExpanded: React.FC<ResultCardExpandedProps> = ({
         </p>
       </div>
 
-      <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+      <Divider />
 
       <div className="w-full flex flex-col gap-2.5 items-center">
         <BarChartPreview
@@ -49,7 +50,7 @@ export const ResultCardExpanded: React.FC<ResultCardExpandedProps> = ({
           onSelectYear={(year) => onOpenDetails(year)}
           className="p-[5px]"
         />
-        <div className="w-full h-px bg-border-subtle rounded-full shrink-0" />
+        <Divider />
         <ShareButton plan={plan} className="w-full max-w-[327px]" />
       </div>
     </div>
