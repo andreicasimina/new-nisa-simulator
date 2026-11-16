@@ -1,6 +1,7 @@
 import { BucketType } from '@/core/types/nisa';
 
 export const YEN_PER_MAN = 10_000;
+export const MAN_PER_OKU = 10_000;
 
 export const APP_TITLE = '新 NISA シミュレーター';
 

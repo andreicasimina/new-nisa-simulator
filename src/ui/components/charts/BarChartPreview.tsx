@@ -226,9 +226,13 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
           </div>
         </div>
 
-        {/* Y labels: the hidden widest label sizes the column, the rest are positioned on their ticks */}
+        {/* Y labels: hidden labels size the column to the widest tick, the rest are positioned on their ticks */}
         <div className="relative text-caption-10 text-text-primary whitespace-nowrap" aria-hidden="true">
-          <span className="invisible block h-0">{formatYen(axis.max)}</span>
+          {axis.ticks.map((tick) => (
+            <span key={`size-${tick}`} className="invisible block h-0">
+              {formatYen(tick)}
+            </span>
+          ))}
           {axis.ticks.map((tick) => (
             <span
               key={tick}
