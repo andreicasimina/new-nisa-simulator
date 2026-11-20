@@ -2,7 +2,7 @@
 
 新NISAの積立運用および**売却に伴う非課税保有限度額（簿価残高）の翌年復活**を月次ベースで計算するWebシミュレーターです。
 
-- **Demo:** [https://andreicasimina.github.io/new-nisa-simulator/](https://andreicasimina.github.io/new-nisa-simulator/)
+- **Demo:** [https://new-nisa-simulator.arc-dev.jp/](https://new-nisa-simulator.arc-dev.jp/)
 - **Design (Figma):** [New NISA Simulator - Design](https://www.figma.com/design/ZEBPLk11SdBrFcdhFwg78e/New-NISA-Simulator---Design?node-id=18-103&m=dev)
 
 <p align="center">
