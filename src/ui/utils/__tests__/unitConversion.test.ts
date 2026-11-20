@@ -21,6 +21,11 @@ describe('unitConversion', () => {
       expect(unitToDisplay(6, InputUnit.YEAR)).toBe(6);
       expect(unitToDisplay(0, InputUnit.YEAR)).toBe('');
     });
+
+    it('converts Age directly', () => {
+      expect(unitToDisplay(30, InputUnit.AGE)).toBe(30);
+      expect(unitToDisplay(0, InputUnit.AGE)).toBe('');
+    });
   });
 
   describe('parseUnitInput', () => {
@@ -41,6 +46,11 @@ describe('unitConversion', () => {
       expect(parseUnitInput('60', InputUnit.YEAR)).toBe(60);
       expect(parseUnitInput('6', InputUnit.YEAR)).toBe(6);
       expect(parseUnitInput('30', InputUnit.YEAR)).toBe(30);
+    });
+
+    it('parses Age input text to domain value', () => {
+      expect(parseUnitInput('30', InputUnit.AGE)).toBe(30);
+      expect(parseUnitInput('65', InputUnit.AGE)).toBe(65);
     });
 
     it('parses Percent input text to domain value', () => {

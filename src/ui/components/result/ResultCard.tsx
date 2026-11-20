@@ -47,9 +47,10 @@ export const ResultCard: React.FC<ResultCardProps> = ({
   onHeightsChange,
   className,
 }) => {
+  const endAge = plan.age + horizonYears - 1;
   const label = hasWithdrawals
-    ? `${horizonYears}年目・売却後の資産額`
-    : `${horizonYears}年目・資産額`;
+    ? `${endAge}歳・売却後の資産額`
+    : `${endAge}歳・資産額`;
 
   const lastYearRecord = yearly[yearly.length - 1];
   const tsumitateMarketValue =

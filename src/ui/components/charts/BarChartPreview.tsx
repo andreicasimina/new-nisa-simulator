@@ -42,6 +42,7 @@ interface ChartBar {
 
 interface BarChartPreviewProps {
   yearly: YearlyRecord[];
+  startAge: number;
   onSelectYear: (yearIndex: number) => void;
   className?: string;
 }
@@ -61,7 +62,8 @@ const toBar = (record: YearlyRecord): ChartBar => {
   };
 };
 
-const yearLabel = (yearIndex: number) => `${yearIndex}年目`;
+const formatAgeLabel = (startAge: number, yearIndex: number) =>
+  `${startAge + yearIndex - 1}歳`;
 
 /** `part` as a percentage of `whole` (0 when `whole` is 0). */
 const shareOf = (part: number, whole: number) => (whole > 0 ? (part / whole) * 100 : 0);
@@ -87,6 +89,7 @@ function useElementHeight<T extends HTMLElement>() {
 
 export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
   yearly,
+  startAge,
   onSelectYear,
   className,
 }) => {
@@ -135,7 +138,7 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
           </button>
         )}
         <p className="text-caption-12-bold text-text-primary whitespace-nowrap" aria-live="polite">
-          {yearLabel(firstBar.yearIndex)} ~ {yearLabel(lastBar.yearIndex)}
+          {formatAgeLabel(startAge, firstBar.yearIndex)} ~ {formatAgeLabel(startAge, lastBar.yearIndex)}
         </p>
         {isDetailed && (
           <button
@@ -190,7 +193,7 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
                   key={bar.yearIndex}
                   type="button"
                   onClick={() => onSelectYear(bar.yearIndex)}
-                  aria-label={`${yearLabel(bar.yearIndex)}の詳細を見る（${ariaSummary}）`}
+                  aria-label={`${formatAgeLabel(startAge, bar.yearIndex)}の詳細を見る（${ariaSummary}）`}
                   className="group/bar relative flex-1 min-w-0 h-full flex flex-col justify-end items-center cursor-pointer focus-visible:outline-2 focus-visible:outline-gain"
                 >
                   <span
@@ -249,13 +252,13 @@ export const BarChartPreview: React.FC<BarChartPreviewProps> = ({
           {isDetailed ? (
             Array.from({ length: slotCount }, (_, i) => (
               <span key={i} className="flex-1 min-w-0 text-center">
-                {visibleBars[i] ? yearLabel(visibleBars[i].yearIndex) : ''}
+                {visibleBars[i] ? formatAgeLabel(startAge, visibleBars[i].yearIndex) : ''}
               </span>
             ))
           ) : (
             <span className="w-full flex justify-between">
-              <span>{yearLabel(firstBar.yearIndex)}</span>
-              <span>{yearLabel(lastBar.yearIndex)}</span>
+              <span>{formatAgeLabel(startAge, firstBar.yearIndex)}</span>
+              <span>{formatAgeLabel(startAge, lastBar.yearIndex)}</span>
             </span>
           )}
         </div>

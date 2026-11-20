@@ -26,18 +26,20 @@ interface WithdrawalSheetProps {
 
 interface WithdrawalDraft {
   label: string;
-  yearIndex: number;
+  withdrawalAge: number;
   targetBucket: BucketType;
   amount: number;
 }
 
 function toDraft(
   withdrawal: MilestoneWithdrawal | null | undefined,
+  startAge: number,
   maxYears: number
 ): WithdrawalDraft {
+  const yearIndex = withdrawal?.yearIndex ?? maxYears;
   return {
     label: withdrawal?.label ?? '',
-    yearIndex: withdrawal?.yearIndex ?? maxYears,
+    withdrawalAge: startAge + yearIndex - 1,
     targetBucket: withdrawal?.targetBucket ?? DEFAULT_WITHDRAWAL.TARGET_BUCKET,
     amount: withdrawal?.amount ?? DEFAULT_WITHDRAWAL.AMOUNT,
   };
@@ -54,19 +56,24 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
   onDelete,
 }) => {
   const [draft, setDraft] = useState<WithdrawalDraft>(() =>
-    toDraft(withdrawal, maxYears)
+    toDraft(withdrawal, plan.age, maxYears)
   );
 
   // Sync draft when opening or switching between add/edit targets
   useEffect(() => {
     if (isOpen) {
-      setDraft(toDraft(withdrawal, maxYears));
+      setDraft(toDraft(withdrawal, plan.age, maxYears));
     }
-  }, [isOpen, withdrawal, maxYears]);
+  }, [isOpen, withdrawal, plan.age, maxYears]);
+
+  const clampedYearIndex = Math.min(
+    Math.max(1, draft.withdrawalAge - plan.age + 1),
+    maxYears
+  );
 
   const available = useMemo(
-    () => getAvailableToWithdraw(plan, draft.yearIndex, withdrawal?.id),
-    [plan, draft.yearIndex, withdrawal?.id]
+    () => getAvailableToWithdraw(plan, clampedYearIndex, withdrawal?.id),
+    [plan, clampedYearIndex, withdrawal?.id]
   );
 
   const bucketAvailable =
@@ -82,7 +89,7 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
 
     const payload: Omit<MilestoneWithdrawal, 'id'> = {
       label: draft.label.trim() || '売却',
-      yearIndex: Math.min(Math.max(1, draft.yearIndex), maxYears),
+      yearIndex: clampedYearIndex,
       targetBucket: draft.targetBucket,
       amount: draft.amount,
     };
@@ -119,18 +126,15 @@ export const WithdrawalSheet: React.FC<WithdrawalSheetProps> = ({
 
         <Divider />
 
-        {/* Year of Withdrawal */}
+        {/* Age of Withdrawal */}
         <div className="flex flex-col gap-1 w-full">
           <LabeledField
-            label="売却年"
-            value={draft.yearIndex}
-            onChange={(val) =>
-              setDraft((d) => ({
-                ...d,
-                yearIndex: Math.min(Math.max(1, val), maxYears),
-              }))
+            label="売却年齢"
+            value={draft.withdrawalAge}
+            onChange={(withdrawalAge) =>
+              setDraft((d) => ({ ...d, withdrawalAge }))
             }
-            unit={InputUnit.YEAR}
+            unit={InputUnit.AGE}
           />
           <p className="text-caption-12 text-text-secondary">
             売却可能額：つみたて {formatYen(available.tsumitate)} / 成長{' '}

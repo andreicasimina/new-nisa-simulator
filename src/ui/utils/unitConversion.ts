@@ -13,6 +13,7 @@ export function unitToDisplay(value: number, unit: InputUnit): number | '' {
     case InputUnit.PERCENT:
       return +(value * 100).toFixed(2);
     case InputUnit.YEAR:
+    case InputUnit.AGE:
       return value;
   }
 }
@@ -32,6 +33,7 @@ export function parseUnitInput(inputValue: string, unit: InputUnit): number {
     case InputUnit.PERCENT:
       return parsed / 100;
     case InputUnit.YEAR:
+    case InputUnit.AGE:
       return Math.round(parsed);
   }
 }

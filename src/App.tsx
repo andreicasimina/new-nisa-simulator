@@ -139,6 +139,7 @@ export const App: React.FC = () => {
             ? activeSheet.yearIndex
             : result.yearly.length
         }
+        startAge={plan.age}
         onYearChange={(yearIndex) =>
           setActiveSheet({ type: 'details', yearIndex })
         }

@@ -6,12 +6,14 @@ import { cn } from '@/ui/lib/utils';
 
 interface WithdrawalListProps {
   withdrawals: MilestoneWithdrawal[];
+  startAge: number;
   onEdit: (withdrawal: MilestoneWithdrawal) => void;
   className?: string;
 }
 
 export const WithdrawalList: React.FC<WithdrawalListProps> = ({
   withdrawals,
+  startAge,
   onEdit,
   className,
 }) => {
@@ -45,10 +47,10 @@ export const WithdrawalList: React.FC<WithdrawalListProps> = ({
               </div>
               <div className="flex flex-col gap-1 flex-1 min-w-0">
                 <span className="text-caption-12 text-text-secondary">
-                  売却年
+                  売却年齢
                 </span>
                 <span className="text-body-16 text-text-primary">
-                  {withdrawal.yearIndex} 年目
+                  {startAge + withdrawal.yearIndex - 1} 歳
                 </span>
               </div>
             </div>

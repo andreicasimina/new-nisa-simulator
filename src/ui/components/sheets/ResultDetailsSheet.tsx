@@ -13,6 +13,7 @@ interface ResultDetailsSheetProps {
   isOpen: boolean;
   onClose: () => void;
   yearIndex: number;
+  startAge: number;
   onYearChange: (year: number) => void;
   yearlyRecords: YearlyRecord[];
 }
@@ -21,6 +22,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
   isOpen,
   onClose,
   yearIndex,
+  startAge,
   onYearChange,
   yearlyRecords,
 }) => {
@@ -63,7 +65,7 @@ export const ResultDetailsSheet: React.FC<ResultDetailsSheetProps> = ({
             <ChevronLeft className="size-3" />
           </IconButton>
           <span className="text-body-14-semibold text-text-primary">
-            {yearIndex}年目
+            {startAge + yearIndex - 1}歳
           </span>
           <IconButton
             tone="secondary"

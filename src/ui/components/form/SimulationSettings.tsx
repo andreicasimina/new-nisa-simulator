@@ -25,7 +25,7 @@ export const SimulationSettings: React.FC<SimulationSettingsProps> = ({
 
   return (
     <FormSection title="シミュレーション基本設定">
-      <div className="grid grid-cols-2 gap-3 w-full">
+      <div className="flex flex-col gap-3 w-full">
         <LabeledField
           label="想定利回り"
           value={plan.expectedReturnRate}
@@ -33,14 +33,22 @@ export const SimulationSettings: React.FC<SimulationSettingsProps> = ({
           unit={InputUnit.PERCENT}
           onInfo={onOpenReturnInfo}
         />
-        <LabeledField
-          label="運用年数"
-          value={plan.horizonYears}
-          onChange={(horizonYears) => onPlanUpdate({ horizonYears })}
-          unit={InputUnit.YEAR}
-          onInfo={onOpenYearsInfo}
-          error={horizonError}
-        />
+        <div className="grid grid-cols-2 gap-3 w-full">
+          <LabeledField
+            label="開始年齢"
+            value={plan.age}
+            onChange={(age) => onPlanUpdate({ age })}
+            unit={InputUnit.AGE}
+          />
+          <LabeledField
+            label="運用年数"
+            value={plan.horizonYears}
+            onChange={(horizonYears) => onPlanUpdate({ horizonYears })}
+            unit={InputUnit.YEAR}
+            onInfo={onOpenYearsInfo}
+            error={horizonError}
+          />
+        </div>
       </div>
     </FormSection>
   );

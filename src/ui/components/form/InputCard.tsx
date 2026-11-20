@@ -113,6 +113,7 @@ export const InputCard: React.FC<InputCardProps> = ({
           <>
             <WithdrawalList
               withdrawals={plan.withdrawals}
+              startAge={plan.age}
               onEdit={onEditWithdrawalClick}
             />
             <AddWithdrawalButton onClick={onAddWithdrawalClick} />

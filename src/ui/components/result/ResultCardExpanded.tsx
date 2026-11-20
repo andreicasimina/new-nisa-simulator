@@ -52,6 +52,7 @@ export const ResultCardExpanded: React.FC<ResultCardExpandedProps> = ({
 
         <BarChartPreview
           yearly={yearly}
+          startAge={plan.age}
           onSelectYear={(year) => onOpenDetails(year)}
           className="p-[5px]"
         />
